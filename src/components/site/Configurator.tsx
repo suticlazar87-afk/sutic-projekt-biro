@@ -173,15 +173,64 @@ export const Configurator = () => {
         <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr]">
           {/* Preview */}
           <div className="relative bg-background shadow-card p-6 md:p-10 flex flex-col">
-            <div className="flex-1 flex items-center justify-center min-h-[460px] bg-[radial-gradient(ellipse_at_center,hsl(var(--muted))_0%,hsl(var(--secondary))_100%)] rounded-sm overflow-hidden">
-              <WindowPreview
-                type={typeCfg}
-                width={svgW}
-                height={svgH}
-                frame={mat.frame}
-                edge={mat.edge}
-                tilt={tilt && typeCfg.hasTilt}
-              />
+            <div
+              ref={stageRef}
+              onPointerDown={onPointerDown}
+              onPointerMove={onPointerMove}
+              onPointerUp={onPointerUp}
+              onPointerCancel={onPointerUp}
+              onWheel={onWheel}
+              className="relative flex-1 flex items-center justify-center min-h-[460px] bg-[radial-gradient(ellipse_at_center,hsl(var(--muted))_0%,hsl(var(--secondary))_100%)] rounded-sm overflow-hidden touch-none select-none"
+              style={{ cursor: zoom > 1 ? "grab" : "default" }}
+            >
+              <div
+                style={{
+                  transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+                  transformOrigin: "center center",
+                  transition: gesture.current ? "none" : "transform 200ms ease-out",
+                }}
+              >
+                <WindowPreview
+                  type={typeCfg}
+                  width={svgW}
+                  height={svgH}
+                  frame={mat.frame}
+                  edge={mat.edge}
+                  tilt={tilt && typeCfg.hasTilt}
+                />
+              </div>
+
+              {/* Zoom controls */}
+              <div className="absolute top-3 right-3 flex flex-col gap-1 bg-background/80 backdrop-blur-sm border border-border rounded-sm">
+                <button
+                  type="button"
+                  onClick={() => setZoom((z) => clampZoom(z * 1.25))}
+                  className="h-8 w-8 grid place-items-center text-foreground hover:text-accent transition-colors"
+                  aria-label="Uvećaj"
+                >
+                  +
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setZoom((z) => clampZoom(z / 1.25))}
+                  className="h-8 w-8 grid place-items-center text-foreground hover:text-accent transition-colors border-t border-border"
+                  aria-label="Smanji"
+                >
+                  −
+                </button>
+                <button
+                  type="button"
+                  onClick={resetZoom}
+                  className="h-8 w-8 grid place-items-center text-[10px] text-foreground hover:text-accent transition-colors border-t border-border"
+                  aria-label="Resetuj"
+                >
+                  1:1
+                </button>
+              </div>
+
+              <div className="pointer-events-none absolute bottom-2 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                Pinch / scroll za zumiranje
+              </div>
             </div>
 
             {/* Dimension labels */}
