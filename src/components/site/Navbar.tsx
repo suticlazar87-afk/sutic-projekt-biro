@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 const links = [
   { href: "#usluge", label: "Usluge" },
-  { href: "#konfigurator", label: "Konfigurator" },
   { href: "#o-nama", label: "O nama" },
   { href: "#reference", label: "Reference" },
   { href: "#kontakt", label: "Kontakt" },
@@ -62,17 +62,18 @@ export const Navbar = () => {
           ))}
         </nav>
 
-        <a
-          href="#kontakt"
+        <Link
+          to="/konfigurator"
           className={cn(
-            "hidden md:inline-flex items-center text-sm font-medium px-5 py-2.5 rounded-sm transition-all duration-300",
+            "hidden md:inline-flex items-center gap-2 text-sm font-medium px-5 py-2.5 rounded-sm transition-all duration-300",
             scrolled
               ? "bg-primary text-primary-foreground hover:bg-accent"
               : "bg-primary-foreground text-primary hover:bg-accent hover:text-accent-foreground"
           )}
         >
-          Zatraži ponudu
-        </a>
+          Konfigurator prozora
+          <span aria-hidden>→</span>
+        </Link>
       </div>
     </header>
   );
