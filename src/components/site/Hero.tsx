@@ -1,4 +1,5 @@
 import heroImg from "@/assets/hero-facade.jpg";
+import { Link } from "react-router-dom";
 
 export const Hero = () => {
   return (
@@ -30,13 +31,13 @@ export const Hero = () => {
             objekte koji zahtevaju preciznost.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-4">
-            <a
-              href="#kontakt"
+            <Link
+              to="/konfigurator"
               className="inline-flex items-center gap-2 bg-accent px-7 py-4 text-sm font-medium text-accent-foreground shadow-glow transition-all duration-300 hover:bg-primary-foreground hover:text-primary"
             >
-              Besplatna procena
+              Konfiguriši svoj prozor
               <span aria-hidden>→</span>
-            </a>
+            </Link>
             <a
               href="#usluge"
               className="inline-flex items-center gap-2 px-7 py-4 text-sm font-medium text-primary-foreground border border-primary-foreground/30 hover:bg-primary-foreground/10 transition-all duration-300"
