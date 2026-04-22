@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 
 const links = [
   { href: "#usluge", label: "Usluge" },
+  { href: "#konfigurator", label: "Konfigurator" },
   { href: "#o-nama", label: "O nama" },
   { href: "#reference", label: "Reference" },
   { href: "#kontakt", label: "Kontakt" },
