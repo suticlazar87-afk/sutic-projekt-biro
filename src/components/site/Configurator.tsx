@@ -66,6 +66,68 @@ export const Configurator = () => {
   const svgH = 420;
   const svgW = Math.min(560, Math.max(220, svgH * ratio));
 
+  // Pinch-to-zoom + pan state for the preview
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const stageRef = useRef<HTMLDivElement>(null);
+  const pointers = useRef<Map<number, { x: number; y: number }>>(new Map());
+  const gesture = useRef<{
+    startDist: number;
+    startZoom: number;
+    startMid: { x: number; y: number };
+    startPan: { x: number; y: number };
+  } | null>(null);
+
+  const clampZoom = (z: number) => Math.min(4, Math.max(1, z));
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    (e.target as Element).setPointerCapture?.(e.pointerId);
+    pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pointers.current.size === 2) {
+      const [a, b] = Array.from(pointers.current.values());
+      gesture.current = {
+        startDist: Math.hypot(a.x - b.x, a.y - b.y),
+        startZoom: zoom,
+        startMid: { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 },
+        startPan: { ...pan },
+      };
+    }
+  };
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!pointers.current.has(e.pointerId)) return;
+    pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pointers.current.size === 2 && gesture.current) {
+      const [a, b] = Array.from(pointers.current.values());
+      const dist = Math.hypot(a.x - b.x, a.y - b.y);
+      const newZoom = clampZoom(
+        gesture.current.startZoom * (dist / gesture.current.startDist),
+      );
+      const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+      setZoom(newZoom);
+      setPan({
+        x: gesture.current.startPan.x + (mid.x - gesture.current.startMid.x),
+        y: gesture.current.startPan.y + (mid.y - gesture.current.startMid.y),
+      });
+    }
+  };
+
+  const onPointerUp = (e: React.PointerEvent) => {
+    pointers.current.delete(e.pointerId);
+    if (pointers.current.size < 2) gesture.current = null;
+  };
+
+  const onWheel = (e: React.WheelEvent) => {
+    if (!e.ctrlKey && !e.metaKey) return;
+    e.preventDefault();
+    setZoom((z) => clampZoom(z * (e.deltaY < 0 ? 1.1 : 0.9)));
+  };
+
+  const resetZoom = () => {
+    setZoom(1);
+    setPan({ x: 0, y: 0 });
+  };
+
   const emailBody = useMemo(() => {
     const lines = [
       "Poštovani,",
