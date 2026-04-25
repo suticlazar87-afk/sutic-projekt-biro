@@ -172,7 +172,7 @@ export const Configurator = () => {
 
         <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr]">
           {/* Preview */}
-          <div className="relative bg-background shadow-card p-6 md:p-10 flex flex-col">
+          <div className="relative bg-background shadow-card p-4 sm:p-6 md:p-10 flex flex-col">
             <div
               ref={stageRef}
               onPointerDown={onPointerDown}
@@ -228,7 +228,7 @@ export const Configurator = () => {
                 </button>
               </div>
 
-              <div className="pointer-events-none absolute bottom-2 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+              <div className="pointer-events-none absolute bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] sm:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.2em] text-muted-foreground">
                 Pinch / scroll za zumiranje
               </div>
             </div>
