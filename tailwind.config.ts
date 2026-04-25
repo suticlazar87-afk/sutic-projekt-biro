@@ -105,12 +105,22 @@ export default {
           from: { opacity: "0" },
           to: { opacity: "1" },
         },
+        "hero-zoom": {
+          from: { transform: "scale(1.12)" },
+          to: { transform: "scale(1.0)" },
+        },
+        "float-up": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-6px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-up": "fade-up 0.8s cubic-bezier(0.4, 0, 0.2, 1) both",
         "fade-in": "fade-in 1s ease-out both",
+        "hero-zoom": "hero-zoom 18s cubic-bezier(0.4, 0, 0.2, 1) forwards",
+        "float-up": "float-up 3s ease-in-out infinite",
       },
     },
   },

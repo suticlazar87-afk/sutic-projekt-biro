@@ -9,12 +9,14 @@ export const Hero = () => {
         alt="Moderna staklena fasada sa aluminijumskom stolarijom"
         width={1920}
         height={1280}
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover animate-hero-zoom"
       />
       <div className="absolute inset-0 bg-gradient-hero" />
       <div className="absolute inset-0 bg-primary/20" />
+      {/* Subtle vignette for depth */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,hsl(var(--primary)/0.55)_100%)]" />
 
-      <div className="container relative z-10 flex min-h-[92vh] flex-col justify-end pb-20 pt-32">
+      <div className="container relative z-10 flex min-h-[92vh] flex-col justify-end pb-24 md:pb-32 pt-32">
         <div className="max-w-3xl animate-fade-up">
           <div className="mb-6 inline-flex items-center gap-3 text-primary-foreground/80">
             <span className="h-px w-10 bg-accent" />
@@ -33,35 +35,33 @@ export const Hero = () => {
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <Link
               to="/konfigurator"
-              className="inline-flex items-center gap-2 bg-accent px-7 py-4 text-sm font-medium text-accent-foreground shadow-glow transition-all duration-300 hover:bg-primary-foreground hover:text-primary"
+              className="group relative inline-flex items-center gap-3 overflow-hidden bg-accent px-8 py-4 text-sm font-medium text-accent-foreground shadow-glow transition-all duration-500 hover:shadow-elegant"
             >
-              Konfiguriši svoj prozor
-              <span aria-hidden>→</span>
+              <span className="absolute inset-0 -translate-x-full bg-primary-foreground transition-transform duration-500 ease-smooth group-hover:translate-x-0" />
+              <span className="relative transition-colors duration-500 group-hover:text-primary">
+                Konfiguriši svoj prozor
+              </span>
+              <span
+                aria-hidden
+                className="relative transition-all duration-500 group-hover:translate-x-1 group-hover:text-primary"
+              >
+                →
+              </span>
             </Link>
             <a
               href="#usluge"
-              className="inline-flex items-center gap-2 px-7 py-4 text-sm font-medium text-primary-foreground border border-primary-foreground/30 hover:bg-primary-foreground/10 transition-all duration-300"
+              className="inline-flex items-center gap-2 px-7 py-4 text-sm font-medium text-primary-foreground border border-primary-foreground/30 hover:bg-primary-foreground/10 hover:border-primary-foreground/60 transition-all duration-300"
             >
               Pogledajte usluge
             </a>
           </div>
         </div>
+      </div>
 
-        <div className="mt-16 grid grid-cols-2 gap-px bg-primary-foreground/15 md:grid-cols-4 max-w-4xl">
-          {[
-            { k: "15+", v: "godina iskustva" },
-            { k: "200+", v: "završenih projekata" },
-            { k: "A+", v: "energetska klasa" },
-            { k: "100%", v: "garancija kvaliteta" },
-          ].map((s) => (
-            <div key={s.v} className="bg-primary/40 backdrop-blur-sm px-6 py-5">
-              <div className="font-display text-3xl text-primary-foreground">{s.k}</div>
-              <div className="text-xs uppercase tracking-wider text-primary-foreground/70 mt-1">
-                {s.v}
-              </div>
-            </div>
-          ))}
-        </div>
+      {/* Scroll indicator */}
+      <div className="pointer-events-none absolute bottom-8 left-1/2 z-10 -translate-x-1/2 flex flex-col items-center gap-2 text-primary-foreground/60">
+        <span className="text-[10px] uppercase tracking-[0.3em]">Skroluj</span>
+        <span className="block h-10 w-px bg-gradient-to-b from-primary-foreground/60 to-transparent animate-pulse" />
       </div>
     </section>
   );
