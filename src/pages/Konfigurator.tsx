@@ -135,10 +135,10 @@ const Konfigurator = () => {
             <ArrowLeft className="h-3.5 w-3.5" />
             Povratak na početnu
           </Link>
-          <h1 className="font-display text-4xl md:text-6xl font-medium leading-[1.05] text-foreground max-w-3xl">
+          <h1 className="font-display text-3xl sm:text-4xl md:text-6xl font-medium leading-[1.05] text-foreground max-w-3xl break-words">
             Konfigurator <span className="italic text-accent">prozora</span>.
           </h1>
-          <p className="mt-5 max-w-xl text-muted-foreground">
+          <p className="mt-5 max-w-xl text-sm sm:text-base text-muted-foreground">
             Izaberite tip otvaranja, dimenzije, materijal i staklo —
             pregled se iscrtava u realnom vremenu, a upit možete
             poslati jednim klikom.
