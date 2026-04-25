@@ -54,17 +54,27 @@ export const Services = () => {
           {services.map((s) => (
             <article
               key={s.nr}
-              className="group relative overflow-hidden bg-secondary shadow-card transition-all duration-500 hover:shadow-elegant"
+              className="group relative overflow-hidden bg-secondary shadow-card transition-all duration-500 hover:shadow-elegant hover:-translate-y-1"
             >
-              <div className="aspect-[4/3] overflow-hidden">
+              <div className="relative aspect-[4/3] overflow-hidden">
                 <img
                   src={s.img}
                   alt={s.title}
                   loading="lazy"
                   width={1200}
                   height={900}
-                  className="h-full w-full object-cover transition-transform duration-[1200ms] ease-smooth group-hover:scale-105"
+                  className="h-full w-full object-cover transition-transform duration-[1400ms] ease-smooth group-hover:scale-110"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-primary/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                <div className="absolute top-5 left-5 font-display text-6xl text-primary-foreground/0 group-hover:text-primary-foreground/90 transition-all duration-500 -translate-y-2 group-hover:translate-y-0">
+                  {s.nr}
+                </div>
+                <div className="absolute bottom-6 left-8 right-8 translate-y-4 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+                  <span className="inline-flex items-center gap-2 text-sm font-medium text-primary-foreground">
+                    Saznajte više
+                    <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                  </span>
+                </div>
               </div>
               <div className="p-8 md:p-10">
                 <div className="flex items-start justify-between gap-6">
@@ -72,13 +82,14 @@ export const Services = () => {
                     <div className="mb-3 text-xs font-medium tracking-[0.2em] text-accent">
                       — {s.nr}
                     </div>
-                    <h3 className="font-display text-2xl md:text-3xl text-foreground">
+                    <h3 className="font-display text-2xl md:text-3xl text-foreground transition-colors group-hover:text-accent">
                       {s.title}
                     </h3>
                   </div>
                 </div>
                 <p className="mt-5 text-muted-foreground leading-relaxed">{s.desc}</p>
               </div>
+              <span className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-smooth" />
             </article>
           ))}
         </div>
