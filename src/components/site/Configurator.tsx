@@ -405,9 +405,9 @@ const Slider = ({
   onChange: (v: number) => void;
 }) => (
   <div>
-    <div className="flex items-baseline justify-between">
+    <div className="flex items-baseline justify-between gap-2 min-w-0">
       <Label>{label}</Label>
-      <span className="font-display text-lg text-foreground">{value} mm</span>
+      <span className="font-display text-base sm:text-lg text-foreground whitespace-nowrap">{value} mm</span>
     </div>
     <input
       type="range"
