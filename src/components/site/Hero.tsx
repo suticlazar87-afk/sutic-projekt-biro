@@ -23,9 +23,9 @@ export const Hero = () => {
             <span className="text-xs uppercase tracking-[0.25em]">Projektovanje · Inženjering · Izvođenje</span>
           </div>
           <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-medium leading-[1.02] text-primary-foreground">
-            Prozori koji
+            Prozori
             <br />
-            <span className="italic text-accent">traju generacijama.</span>
+            <span className="italic text-accent">i vrata.</span>
           </h1>
           <p className="mt-8 max-w-xl text-lg text-primary-foreground/85 leading-relaxed">
             Više od petnaest godina projektujemo i ugrađujemo Al i PVC stolariju,
