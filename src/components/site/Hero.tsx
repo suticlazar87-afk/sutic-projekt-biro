@@ -9,7 +9,7 @@ export const Hero = () => {
         alt="Moderna staklena fasada sa aluminijumskom stolarijom"
         width={1920}
         height={1280}
-        className="absolute inset-0 h-full w-full object-cover scale-105 animate-[heroZoom_18s_ease-out_forwards]"
+        className="absolute inset-0 h-full w-full object-cover animate-hero-zoom"
       />
       <div className="absolute inset-0 bg-gradient-hero" />
       <div className="absolute inset-0 bg-primary/20" />
