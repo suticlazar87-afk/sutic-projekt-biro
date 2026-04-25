@@ -170,9 +170,9 @@ export const Configurator = () => {
           </p>
         </div>
 
-        <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr]">
+        <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] min-w-0">
           {/* Preview */}
-          <div className="relative bg-background shadow-card p-4 sm:p-6 md:p-10 flex flex-col">
+          <div className="relative bg-background shadow-card p-4 sm:p-6 md:p-10 flex flex-col min-w-0">
             <div
               ref={stageRef}
               onPointerDown={onPointerDown}
@@ -242,7 +242,7 @@ export const Configurator = () => {
           </div>
 
           {/* Controls */}
-          <div className="space-y-8">
+          <div className="space-y-8 min-w-0">
             {/* Type */}
             <div>
               <Label>Tip prozora</Label>
@@ -266,7 +266,7 @@ export const Configurator = () => {
             </div>
 
             {/* Dimensions */}
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <Slider
                 label="Širina"
                 value={width}
@@ -288,7 +288,7 @@ export const Configurator = () => {
             {/* Material */}
             <div>
               <Label>Materijal i boja</Label>
-              <div className="mt-3 grid grid-cols-3 gap-2">
+              <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {MATERIALS.map((m) => (
                   <button
                     key={m.id}
