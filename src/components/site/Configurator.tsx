@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 type WindowType =
@@ -61,15 +61,38 @@ export const Configurator = () => {
   const area = (width * height) / 1_000_000;
   const price = Math.round(area * BASE_PRICE[material] * glassCfg.factor);
 
+  // Track stage size so SVG always fits the viewport
+  const [stageW, setStageW] = useState(560);
   // SVG viewBox scales proportionally to real dimensions
   const ratio = width / height;
-  const svgH = 420;
-  const svgW = Math.min(560, Math.max(220, svgH * ratio));
+  const maxH = stageW < 380 ? 320 : stageW < 520 ? 380 : 420;
+  const maxW = Math.max(160, stageW - 32);
+  let svgH = maxH;
+  let svgW = svgH * ratio;
+  if (svgW > maxW) {
+    svgW = maxW;
+    svgH = svgW / ratio;
+  }
+  svgW = Math.max(160, svgW);
+  svgH = Math.max(160, svgH);
 
   // Pinch-to-zoom + pan state for the preview
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const stageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setStageW(entry.contentRect.width);
+      }
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   const pointers = useRef<Map<number, { x: number; y: number }>>(new Map());
   const gesture = useRef<{
     startDist: number;
@@ -170,9 +193,9 @@ export const Configurator = () => {
           </p>
         </div>
 
-        <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr]">
+        <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] min-w-0">
           {/* Preview */}
-          <div className="relative bg-background shadow-card p-4 sm:p-6 md:p-10 flex flex-col">
+          <div className="relative bg-background shadow-card p-4 sm:p-6 md:p-10 flex flex-col min-w-0">
             <div
               ref={stageRef}
               onPointerDown={onPointerDown}
@@ -242,7 +265,7 @@ export const Configurator = () => {
           </div>
 
           {/* Controls */}
-          <div className="space-y-8">
+          <div className="space-y-8 min-w-0">
             {/* Type */}
             <div>
               <Label>Tip prozora</Label>
@@ -266,7 +289,7 @@ export const Configurator = () => {
             </div>
 
             {/* Dimensions */}
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <Slider
                 label="Širina"
                 value={width}
@@ -288,7 +311,7 @@ export const Configurator = () => {
             {/* Material */}
             <div>
               <Label>Materijal i boja</Label>
-              <div className="mt-3 grid grid-cols-3 gap-2">
+              <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {MATERIALS.map((m) => (
                   <button
                     key={m.id}
@@ -405,9 +428,9 @@ const Slider = ({
   onChange: (v: number) => void;
 }) => (
   <div>
-    <div className="flex items-baseline justify-between">
+    <div className="flex items-baseline justify-between gap-2 min-w-0">
       <Label>{label}</Label>
-      <span className="font-display text-lg text-foreground">{value} mm</span>
+      <span className="font-display text-base sm:text-lg text-foreground whitespace-nowrap">{value} mm</span>
     </div>
     <input
       type="range"

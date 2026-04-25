@@ -23,7 +23,7 @@ const Konfigurator = () => {
   }, [open]);
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background overflow-x-hidden">
       {/* Slim top bar */}
       <header className="fixed top-0 inset-x-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
         <div className="container flex h-16 items-center justify-between">
