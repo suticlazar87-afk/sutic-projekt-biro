@@ -159,12 +159,12 @@ export const Configurator = () => {
         <div className="mb-14 max-w-2xl">
           <div className="mb-4 flex items-center gap-3 text-muted-foreground">
             <span className="h-px w-10 bg-accent" />
-            <span className="text-xs uppercase tracking-[0.25em]">Konfigurator</span>
+            <span className="text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.25em]">Konfigurator</span>
           </div>
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.05] text-foreground">
+          <h2 className="font-display text-[2rem] sm:text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.05] text-foreground break-words hyphens-auto">
             Vizualizujte <span className="italic text-accent">vaš prozor</span> pre nego što ga naručite.
           </h2>
-          <p className="mt-5 text-muted-foreground">
+          <p className="mt-5 text-sm sm:text-base text-muted-foreground">
             Izaberite tip, dimenzije, materijal i staklo — pregled se menja uživo.
             Pošaljite nam izbor jednim klikom.
           </p>
@@ -234,10 +234,10 @@ export const Configurator = () => {
             </div>
 
             {/* Dimension labels */}
-            <div className="mt-6 flex items-center justify-between text-xs uppercase tracking-[0.2em] text-muted-foreground">
-              <span>Š: {width} mm</span>
-              <span>{area.toFixed(2)} m²</span>
-              <span>V: {height} mm</span>
+            <div className="mt-6 flex items-center justify-between gap-2 text-[10px] sm:text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em] text-muted-foreground">
+              <span className="whitespace-nowrap">Š: {width} mm</span>
+              <span className="whitespace-nowrap">{area.toFixed(2)} m²</span>
+              <span className="whitespace-nowrap">V: {height} mm</span>
             </div>
           </div>
 
