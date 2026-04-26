@@ -487,19 +487,41 @@ const WindowPreview = ({
       className="drop-shadow-[0_30px_40px_rgba(15,30,55,0.25)]"
     >
       <defs>
-        <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#cfe4f0" stopOpacity="0.85" />
-          <stop offset="45%" stopColor="#e8f2f8" stopOpacity="0.55" />
-          <stop offset="100%" stopColor="#9cc0d6" stopOpacity="0.7" />
+        {/* Realistic sky reflection in glass */}
+        <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#7fa8c4" stopOpacity="0.95" />
+          <stop offset="35%" stopColor="#b8d4e3" stopOpacity="0.85" />
+          <stop offset="65%" stopColor="#dce9f0" stopOpacity="0.75" />
+          <stop offset="100%" stopColor="#8fb4c9" stopOpacity="0.85" />
         </linearGradient>
-        <linearGradient id="glassReflect" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.55" />
-          <stop offset="50%" stopColor="#ffffff" stopOpacity="0" />
+        {/* Diagonal light streak */}
+        <linearGradient id="glassReflect" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0" />
+          <stop offset="40%" stopColor="#ffffff" stopOpacity="0.45" />
+          <stop offset="55%" stopColor="#ffffff" stopOpacity="0.15" />
+          <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
         </linearGradient>
+        {/* Frame highlight (top/left bevel) */}
+        <linearGradient id="frameHi" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.35" />
+          <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+        </linearGradient>
+        {/* Frame shadow (bottom/right bevel) */}
+        <linearGradient id="frameLo" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#000000" stopOpacity="0" />
+          <stop offset="100%" stopColor="#000000" stopOpacity="0.25" />
+        </linearGradient>
+        {/* Soft shadow inside glass cavity */}
+        <radialGradient id="glassDepth" cx="0.5" cy="0.5" r="0.7">
+          <stop offset="60%" stopColor="#000000" stopOpacity="0" />
+          <stop offset="100%" stopColor="#000000" stopOpacity="0.18" />
+        </radialGradient>
       </defs>
 
-      {/* Outer frame */}
+      {/* Outer frame with bevel */}
       <rect x={0} y={0} width={width} height={height} fill={frame} />
+      <rect x={0} y={0} width={width} height={height} fill="url(#frameHi)" />
+      <rect x={0} y={0} width={width} height={height} fill="url(#frameLo)" />
       <rect
         x={0.5}
         y={0.5}
@@ -509,8 +531,16 @@ const WindowPreview = ({
         stroke={edge}
         strokeWidth={1}
       />
-      {/* Inner cutout (glass area background) */}
-      <rect x={innerX} y={innerY} width={innerW} height={innerH} fill={edge} opacity={0.15} />
+      {/* Inner cutout — recessed look */}
+      <rect x={innerX} y={innerY} width={innerW} height={innerH} fill={edge} opacity={0.35} />
+      <rect
+        x={innerX}
+        y={innerY}
+        width={innerW}
+        height={2}
+        fill="#000"
+        opacity={0.25}
+      />
 
       {Array.from({ length: sashCount }).map((_, i) => {
         const sx = innerX + i * (sashW + GAP);
@@ -521,10 +551,17 @@ const WindowPreview = ({
         // For balcony doors, make the last sash a door (taller visual split handle lower)
         const isDoor = type.isDoor && i === sashCount - 1;
 
+        const gx = sx + SASH;
+        const gy = sy + SASH;
+        const gw = sw - SASH * 2;
+        const gh = sh - SASH * 2;
+
         return (
           <g key={i}>
-            {/* Sash frame */}
+            {/* Sash frame with bevel */}
             <rect x={sx} y={sy} width={sw} height={sh} fill={frame} />
+            <rect x={sx} y={sy} width={sw} height={sh} fill="url(#frameHi)" />
+            <rect x={sx} y={sy} width={sw} height={sh} fill="url(#frameLo)" />
             <rect
               x={sx + 0.5}
               y={sy + 0.5}
@@ -534,20 +571,41 @@ const WindowPreview = ({
               stroke={edge}
               strokeWidth={1}
             />
-            {/* Glass */}
+            {/* Inner sash rebate (where glass sits) */}
             <rect
-              x={sx + SASH}
-              y={sy + SASH}
-              width={sw - SASH * 2}
-              height={sh - SASH * 2}
-              fill="url(#glass)"
+              x={sx + SASH - 2}
+              y={sy + SASH - 2}
+              width={sw - (SASH - 2) * 2}
+              height={sh - (SASH - 2) * 2}
+              fill={edge}
+              opacity={0.5}
             />
+            {/* Glass */}
+            <rect x={gx} y={gy} width={gw} height={gh} fill="url(#glass)" />
+            {/* Diagonal light streak */}
+            <rect x={gx} y={gy} width={gw} height={gh} fill="url(#glassReflect)" />
+            {/* Subtle horizon line — fake landscape reflection */}
+            <line
+              x1={gx}
+              y1={gy + gh * 0.62}
+              x2={gx + gw}
+              y2={gy + gh * 0.62}
+              stroke="#ffffff"
+              strokeOpacity={0.18}
+              strokeWidth={0.6}
+            />
+            {/* Cavity depth shadow */}
+            <rect x={gx} y={gy} width={gw} height={gh} fill="url(#glassDepth)" />
+            {/* Inner glass border */}
             <rect
-              x={sx + SASH}
-              y={sy + SASH}
-              width={sw - SASH * 2}
-              height={(sh - SASH * 2) * 0.4}
-              fill="url(#glassReflect)"
+              x={gx + 0.5}
+              y={gy + 0.5}
+              width={gw - 1}
+              height={gh - 1}
+              fill="none"
+              stroke="#000"
+              strokeOpacity={0.2}
+              strokeWidth={0.75}
             />
 
             {/* Opening indicator: dashed lines forming triangle */}
