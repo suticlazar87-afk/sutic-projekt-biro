@@ -7,25 +7,25 @@ const services = [
   {
     nr: "01",
     title: "Al i PVC stolarija",
-    desc: "Vrhunski profili sa višekomornim sistemom i troslojnim staklom. Odlična izolacija, dug vek i savršena estetika.",
+    desc: "Aluminijumska i PVC stolarija — prozori i vrata po meri objekta.",
     img: pvcImg,
   },
   {
     nr: "02",
-    title: "Staklene fasade i alubond",
-    desc: "Strukturalne staklene fasade i ventilirane alubond obloge za savremena zdanja — projektovane po meri objekta.",
+    title: "Al fasade i alubond",
+    desc: "Aluminijumske fasade i alubond obloge za stambene i poslovne objekte.",
     img: fasadeImg,
   },
   {
     nr: "03",
-    title: "Aluminijumske konstrukcije",
-    desc: "Tanki okviri, velike površine stakla i čiste linije — aluminijumska stolarija koja transformiše prostor.",
+    title: "Staklene bašte",
+    desc: "Staklene bašte i nadstrešnice u aluminijumskoj konstrukciji.",
     img: alImg,
   },
   {
     nr: "04",
-    title: "Staklene bašte",
-    desc: "Zimske bašte i nadstrešnice po meri — produžetak doma kroz svetlost, toplotu i pogled na prirodu.",
+    title: "Prateća oprema",
+    desc: "Roletne, komarnici, unutrašnje prozorske daske i okov.",
     img: basteImg,
   },
 ];
@@ -96,9 +96,9 @@ export const Services = () => {
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {[
-            { t: "Termotehnika", d: "Klimatizacija, grejanje i ventilacija — kompletne instalacije." },
+            { t: "Klimatizacija, grejanje i ventilacija", d: "Termotehničke instalacije za stambene i poslovne objekte." },
             { t: "Solarni sistemi", d: "Ušteda energije u domaćinstvima i poslovnim objektima." },
-            { t: "Prateća oprema", d: "Roletne, komarnici, unutrašnje prozorske daske i okov." },
+            { t: "Aluminijumske i PVC konstrukcije", d: "Projektovanje i izvođenje kompletnih sistema." },
           ].map((x) => (
             <div key={x.t} className="border-l-2 border-accent pl-6 py-2">
               <h4 className="font-display text-xl text-foreground">{x.t}</h4>

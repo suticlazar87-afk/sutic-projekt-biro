@@ -38,8 +38,7 @@ export const Contact = () => {
             Razgovarajmo o <span className="italic text-accent">vašem projektu.</span>
           </h2>
           <p className="mt-6 text-muted-foreground leading-relaxed">
-            Pošaljite nam dimenzije, fotografije ili projekat — odgovaramo u roku
-            od 24 sata sa preliminarnom procenom i terminom izlaska na teren.
+            Pošaljite nam upit putem emaila ili nas pozovite telefonom.
           </p>
 
           <dl className="mt-10 space-y-6">
