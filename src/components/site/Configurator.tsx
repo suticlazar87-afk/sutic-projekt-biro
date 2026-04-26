@@ -683,17 +683,22 @@ const Handle = ({
   side: "left" | "right";
   color: string;
 }) => {
-  const len = 18;
+  const len = 22;
+  const baseX = side === "right" ? x - 4 : x - 4;
+  const leverX = side === "right" ? x - 4 - len : x - 4;
   return (
-    <g fill={color}>
-      <rect x={x - 3} y={y - 3} width={6} height={6} rx={1} />
-      <rect
-        x={side === "right" ? x - 3 - len : x - 3}
-        y={y - 1.5}
-        width={len}
-        height={3}
-        rx={1}
-      />
+    <g>
+      {/* Soft shadow under handle */}
+      <ellipse cx={side === "right" ? x - len / 2 : x + len / 2} cy={y + 5} rx={len / 1.6} ry={2} fill="#000" opacity={0.18} />
+      {/* Metal base plate */}
+      <rect x={baseX} y={y - 5} width={8} height={10} rx={2} fill={color} />
+      <rect x={baseX} y={y - 5} width={8} height={3} rx={1} fill="#fff" opacity={0.25} />
+      {/* Lever (chrome look) */}
+      <rect x={leverX} y={y - 2} width={len} height={4} rx={2} fill={color} />
+      <rect x={leverX} y={y - 2} width={len} height={1.4} rx={0.7} fill="#fff" opacity={0.55} />
+      <rect x={leverX} y={y + 1} width={len} height={1} rx={0.5} fill="#000" opacity={0.25} />
+      {/* Pivot screw */}
+      <circle cx={x} cy={y} r={1.4} fill="#000" opacity={0.4} />
     </g>
   );
 };
