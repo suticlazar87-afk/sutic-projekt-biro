@@ -609,7 +609,8 @@ const WindowPreview = ({
             />
 
             {/* Opening indicator: dashed lines forming triangle */}
-            {type.id !== "fixed" && <OpeningIndicator x={sx} y={sy} w={sw} h={sh} tilt={tilt} isDoor={isDoor} side={i === 0 ? "left" : i === sashCount - 1 ? "right" : "left"} />}
+            {/* Šarke su na suprotnoj strani od ručice → apex trougla pokazuje ka šarkama */}
+            {type.id !== "fixed" && <OpeningIndicator x={sx} y={sy} w={sw} h={sh} tilt={tilt} isDoor={isDoor} side={i === 0 ? "right" : i === sashCount - 1 ? "left" : "right"} />}
 
             {/* Handle */}
             {type.id !== "fixed" && (
