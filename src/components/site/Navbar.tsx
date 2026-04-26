@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logo.jpg";
 
 const links = [
   { href: "#usluge", label: "Usluge" },
@@ -29,11 +30,11 @@ export const Navbar = () => {
     >
       <div className="container flex h-20 items-center justify-between">
         <a href="#" className="flex items-center gap-3 group">
-          <div className="relative h-10 w-10 overflow-hidden rounded-sm bg-primary">
-            <div className="absolute inset-0 bg-gradient-accent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-            <span className="absolute inset-0 grid place-items-center font-display text-lg font-semibold text-primary-foreground">
-              Š
-            </span>
+          <div className={cn(
+            "relative h-11 w-11 overflow-hidden rounded-sm transition-all duration-500",
+            scrolled ? "bg-transparent" : "bg-background/90 ring-1 ring-primary-foreground/20"
+          )}>
+            <img src={logo} alt="Šutić Projekt Biro logo" className="h-full w-full object-contain" />
           </div>
           <div className="leading-tight">
             <div className={cn("font-display text-base font-medium tracking-tight", scrolled ? "text-foreground" : "text-primary-foreground")}>
