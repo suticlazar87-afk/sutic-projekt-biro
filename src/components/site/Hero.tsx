@@ -28,9 +28,9 @@ export const Hero = () => {
             <span className="italic text-accent">i vrata.</span>
           </h1>
           <p className="mt-8 max-w-xl text-lg text-primary-foreground/85 leading-relaxed">
-            Više od petnaest godina projektujemo i ugrađujemo Al i PVC stolariju,
-            staklene fasade i termotehničke instalacije — za domove i poslovne
-            objekte koji zahtevaju preciznost.
+            Aluminijumske i PVC konstrukcije i termotehničke instalacije —
+            projektovanje, inženjering i izvođenje za stambene i poslovne
+            objekte u Beogradu.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <Link

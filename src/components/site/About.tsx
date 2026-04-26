@@ -6,7 +6,7 @@ export const About = () => {
         aria-hidden
         className="pointer-events-none absolute -top-10 right-0 font-display text-[16rem] md:text-[22rem] leading-none text-foreground/[0.04] select-none"
       >
-        2009
+        ŠPB
       </span>
 
       <div className="container relative grid gap-16 lg:grid-cols-12 items-start">
@@ -20,34 +20,17 @@ export const About = () => {
             <br />
             <span className="italic text-accent">svakom projektu.</span>
           </h2>
-
-          <div className="mt-10 grid grid-cols-3 gap-4 max-w-md">
-            {[
-              ["15+", "godina"],
-              ["200+", "projekata"],
-              ["A+", "klasa"],
-            ].map(([k, v]) => (
-              <div key={v} className="border-l-2 border-accent pl-3">
-                <div className="font-display text-3xl text-foreground">{k}</div>
-                <div className="text-[11px] uppercase tracking-wider text-muted-foreground mt-1">
-                  {v}
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
 
         <div className="lg:col-span-7 space-y-6 text-lg leading-relaxed text-foreground/80">
           <p>
-            Šutić Projekt Biro osnovan je 2009. godine u Beogradu. Specijalizovani
-            smo za projektovanje, izradu i ugradnju aluminijumskih i PVC
-            konstrukcija, kao i termotehničkih instalacija.
+            Šutić Projekt Biro se bavi projektovanjem, izradom i ugradnjom
+            aluminijumskih i PVC konstrukcija, kao i termotehničkih instalacija.
           </p>
           <p>
-            Vodi nas <strong className="text-foreground">Dejan Šutić, dipl. inženjer mašinstva</strong>. Svaki projekat
-            — od porodične kuće do staklene fasade poslovne zgrade — prolazi kroz
-            isti proces: pažljivo merenje, tehnički proračun, odabir materijala i
-            nadzor nad ugradnjom.
+            Vodi nas <strong className="text-foreground">Dejan Šutić, dipl. inženjer mašinstva</strong>.
+            Naš fokus je ušteda energije u domaćinstvima i poslovnim objektima —
+            kroz pravilno odabrane sisteme stolarije, fasada i termotehnike.
           </p>
           <div className="pt-6 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-border">
             {[

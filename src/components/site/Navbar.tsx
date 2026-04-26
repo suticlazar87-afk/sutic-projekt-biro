@@ -41,7 +41,7 @@ export const Navbar = () => {
               Šutić Projekt Biro
             </div>
             <div className={cn("text-[11px] uppercase tracking-[0.18em]", scrolled ? "text-muted-foreground" : "text-primary-foreground/70")}>
-              od 2009.
+              Beograd
             </div>
           </div>
         </a>
