@@ -7,25 +7,25 @@ const services = [
   {
     nr: "01",
     title: "Al i PVC stolarija",
-    desc: "Aluminijumska i PVC stolarija — prozori i vrata po meri objekta.",
+    desc: "Aluminijumska i PVC stolarija.",
     img: pvcImg,
   },
   {
     nr: "02",
     title: "Al fasade i alubond",
-    desc: "Aluminijumske fasade i alubond obloge za stambene i poslovne objekte.",
+    desc: "Aluminijumske fasade i alubond.",
     img: fasadeImg,
   },
   {
     nr: "03",
     title: "Staklene bašte",
-    desc: "Staklene bašte i nadstrešnice u aluminijumskoj konstrukciji.",
+    desc: "Staklene bašte.",
     img: alImg,
   },
   {
     nr: "04",
     title: "Prateća oprema",
-    desc: "Roletne, komarnici, unutrašnje prozorske daske i okov.",
+    desc: "Prateća oprema.",
     img: basteImg,
   },
 ];
@@ -38,15 +38,16 @@ export const Services = () => {
           <div className="max-w-2xl">
             <div className="mb-4 flex items-center gap-3 text-muted-foreground">
               <span className="h-px w-10 bg-accent" />
-              <span className="text-xs uppercase tracking-[0.25em]">Naše usluge</span>
+              <span className="text-xs uppercase tracking-[0.25em]">Delatnost</span>
             </div>
             <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.05] text-foreground">
-              Kompletna rešenja za <span className="italic text-accent">omotač objekta</span>.
+              Aluminijumske i PVC <span className="italic text-accent">konstrukcije</span>.
             </h2>
           </div>
           <p className="max-w-md text-muted-foreground">
-            Od prvog nacrta do završne ugradnje — pokrivamo ceo proces, bez
-            podizvođača i bez kompromisa.
+            ŠUTIĆ PROJEKT BIRO se bavi projektovanjem, inženjeringom i
+            izvođenjem aluminijumskih i PVC konstrukcija i termotehničkih
+            instalacija.
           </p>
         </div>
 
@@ -96,13 +97,13 @@ export const Services = () => {
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {[
-            { t: "Klimatizacija, grejanje i ventilacija", d: "Termotehničke instalacije za stambene i poslovne objekte." },
+            { t: "Termotehničke instalacije", d: "" },
+            { t: "Klimatizacija, grejanje i ventilacija", d: "" },
             { t: "Solarni sistemi", d: "Ušteda energije u domaćinstvima i poslovnim objektima." },
-            { t: "Aluminijumske i PVC konstrukcije", d: "Projektovanje i izvođenje kompletnih sistema." },
           ].map((x) => (
             <div key={x.t} className="border-l-2 border-accent pl-6 py-2">
               <h4 className="font-display text-xl text-foreground">{x.t}</h4>
-              <p className="mt-2 text-sm text-muted-foreground">{x.d}</p>
+              {x.d && <p className="mt-2 text-sm text-muted-foreground">{x.d}</p>}
             </div>
           ))}
         </div>
