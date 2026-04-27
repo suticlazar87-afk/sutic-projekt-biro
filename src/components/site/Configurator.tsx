@@ -608,9 +608,8 @@ const WindowPreview = ({
               strokeWidth={0.75}
             />
 
-            {/* Trokrilni: srednje krilo je fiksno (bez šarki, bez ručice).
-                Krajnja krila se otvaraju — šarke na spoljašnjoj strani, ručica ka sredini. */}
-            {type.id !== "fixed" && !(sashCount === 3 && i === 1) && (
+            {/* Opening indicator */}
+            {type.id !== "fixed" && (
               <OpeningIndicator
                 x={sx}
                 y={sy}
@@ -623,7 +622,7 @@ const WindowPreview = ({
             )}
 
             {/* Handle */}
-            {type.id !== "fixed" && !(sashCount === 3 && i === 1) && (
+            {type.id !== "fixed" && (
               <Handle
                 x={i === 0 ? sx + sw - SASH - 4 : sx + SASH + 4}
                 y={isDoor ? sy + sh * 0.55 : sy + sh * 0.5}
