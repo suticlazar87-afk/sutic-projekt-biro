@@ -467,9 +467,9 @@ const WindowPreview = ({
   edge: string;
   tilt: boolean;
 }) => {
-  const FRAME = 16; // outer frame thickness
-  const SASH = 12; // sash thickness
-  const GAP = 3;
+  const FRAME = 14; // outer frame thickness
+  const SASH = 10; // sash thickness
+  const GAP = 2;
 
   const innerX = FRAME;
   const innerY = FRAME;
@@ -484,78 +484,44 @@ const WindowPreview = ({
       width={width}
       height={height}
       viewBox={`0 0 ${width} ${height}`}
-      className="drop-shadow-[0_40px_50px_rgba(15,30,55,0.35)]"
+      className="drop-shadow-[0_30px_40px_rgba(15,30,55,0.25)]"
     >
       <defs>
-        {/* Realistic sky gradient — bluer at top, lighter toward horizon */}
+        {/* Realistic sky reflection in glass */}
         <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#5a8fb0" stopOpacity="0.95" />
-          <stop offset="30%" stopColor="#89b3cc" stopOpacity="0.9" />
-          <stop offset="58%" stopColor="#d6e6ed" stopOpacity="0.85" />
-          <stop offset="62%" stopColor="#c9dce4" stopOpacity="0.85" />
-          <stop offset="100%" stopColor="#6e8a98" stopOpacity="0.9" />
+          <stop offset="0%" stopColor="#7fa8c4" stopOpacity="0.95" />
+          <stop offset="35%" stopColor="#b8d4e3" stopOpacity="0.85" />
+          <stop offset="65%" stopColor="#dce9f0" stopOpacity="0.75" />
+          <stop offset="100%" stopColor="#8fb4c9" stopOpacity="0.85" />
         </linearGradient>
-        {/* Diagonal light sweep */}
+        {/* Diagonal light streak */}
         <linearGradient id="glassReflect" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="#ffffff" stopOpacity="0" />
-          <stop offset="35%" stopColor="#ffffff" stopOpacity="0.55" />
-          <stop offset="50%" stopColor="#ffffff" stopOpacity="0.1" />
+          <stop offset="40%" stopColor="#ffffff" stopOpacity="0.45" />
+          <stop offset="55%" stopColor="#ffffff" stopOpacity="0.15" />
           <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
         </linearGradient>
-        {/* Secondary softer reflection */}
-        <linearGradient id="glassReflect2" x1="1" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#ffffff" stopOpacity="0" />
-          <stop offset="70%" stopColor="#ffffff" stopOpacity="0" />
-          <stop offset="85%" stopColor="#ffffff" stopOpacity="0.18" />
-          <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
-        </linearGradient>
-        {/* Frame top highlight */}
+        {/* Frame highlight (top/left bevel) */}
         <linearGradient id="frameHi" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.45" />
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.35" />
           <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
         </linearGradient>
-        {/* Frame bottom shadow */}
+        {/* Frame shadow (bottom/right bevel) */}
         <linearGradient id="frameLo" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#000000" stopOpacity="0" />
-          <stop offset="100%" stopColor="#000000" stopOpacity="0.3" />
+          <stop offset="100%" stopColor="#000000" stopOpacity="0.25" />
         </linearGradient>
-        {/* Left-side frame highlight */}
-        <linearGradient id="frameSideHi" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.3" />
-          <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
-        </linearGradient>
-        {/* Right-side frame shadow */}
-        <linearGradient id="frameSideLo" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#000000" stopOpacity="0" />
-          <stop offset="100%" stopColor="#000000" stopOpacity="0.22" />
-        </linearGradient>
-        {/* Glass cavity vignette */}
-        <radialGradient id="glassDepth" cx="0.5" cy="0.5" r="0.75">
-          <stop offset="55%" stopColor="#000000" stopOpacity="0" />
-          <stop offset="100%" stopColor="#000000" stopOpacity="0.28" />
+        {/* Soft shadow inside glass cavity */}
+        <radialGradient id="glassDepth" cx="0.5" cy="0.5" r="0.7">
+          <stop offset="60%" stopColor="#000000" stopOpacity="0" />
+          <stop offset="100%" stopColor="#000000" stopOpacity="0.18" />
         </radialGradient>
-        {/* Chrome handle gradient */}
-        <linearGradient id="chrome" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#f5f7fa" />
-          <stop offset="45%" stopColor="#c8ced6" />
-          <stop offset="55%" stopColor="#8f969f" />
-          <stop offset="100%" stopColor="#d8dde3" />
-        </linearGradient>
       </defs>
 
-      {/* Outer frame with bevel on all four sides */}
+      {/* Outer frame with bevel */}
       <rect x={0} y={0} width={width} height={height} fill={frame} />
       <rect x={0} y={0} width={width} height={height} fill="url(#frameHi)" />
       <rect x={0} y={0} width={width} height={height} fill="url(#frameLo)" />
-      <rect x={0} y={0} width={width} height={height} fill="url(#frameSideHi)" />
-      <rect x={0} y={0} width={width} height={height} fill="url(#frameSideLo)" />
-      {/* Mitre (45°) joints at corners */}
-      <g stroke={edge} strokeWidth={0.8} opacity={0.55}>
-        <line x1={0} y1={0} x2={FRAME} y2={FRAME} />
-        <line x1={width} y1={0} x2={width - FRAME} y2={FRAME} />
-        <line x1={0} y1={height} x2={FRAME} y2={height - FRAME} />
-        <line x1={width} y1={height} x2={width - FRAME} y2={height - FRAME} />
-      </g>
       <rect
         x={0.5}
         y={0.5}
@@ -566,9 +532,15 @@ const WindowPreview = ({
         strokeWidth={1}
       />
       {/* Inner cutout — recessed look */}
-      <rect x={innerX} y={innerY} width={innerW} height={innerH} fill={edge} opacity={0.45} />
-      <rect x={innerX} y={innerY} width={innerW} height={2.5} fill="#000" opacity={0.3} />
-      <rect x={innerX} y={innerY + innerH - 1.5} width={innerW} height={1.5} fill="#fff" opacity={0.15} />
+      <rect x={innerX} y={innerY} width={innerW} height={innerH} fill={edge} opacity={0.35} />
+      <rect
+        x={innerX}
+        y={innerY}
+        width={innerW}
+        height={2}
+        fill="#000"
+        opacity={0.25}
+      />
 
       {Array.from({ length: sashCount }).map((_, i) => {
         const sx = innerX + i * (sashW + GAP);
@@ -586,19 +558,10 @@ const WindowPreview = ({
 
         return (
           <g key={i}>
-            {/* Sash frame with bevel on all sides */}
+            {/* Sash frame with bevel */}
             <rect x={sx} y={sy} width={sw} height={sh} fill={frame} />
             <rect x={sx} y={sy} width={sw} height={sh} fill="url(#frameHi)" />
             <rect x={sx} y={sy} width={sw} height={sh} fill="url(#frameLo)" />
-            <rect x={sx} y={sy} width={sw} height={sh} fill="url(#frameSideHi)" />
-            <rect x={sx} y={sy} width={sw} height={sh} fill="url(#frameSideLo)" />
-            {/* Sash mitre joints */}
-            <g stroke={edge} strokeWidth={0.7} opacity={0.5}>
-              <line x1={sx} y1={sy} x2={sx + SASH} y2={sy + SASH} />
-              <line x1={sx + sw} y1={sy} x2={sx + sw - SASH} y2={sy + SASH} />
-              <line x1={sx} y1={sy + sh} x2={sx + SASH} y2={sy + sh - SASH} />
-              <line x1={sx + sw} y1={sy + sh} x2={sx + sw - SASH} y2={sy + sh - SASH} />
-            </g>
             <rect
               x={sx + 0.5}
               y={sy + 0.5}
@@ -610,66 +573,27 @@ const WindowPreview = ({
             />
             {/* Inner sash rebate (where glass sits) */}
             <rect
-              x={sx + SASH - 3}
-              y={sy + SASH - 3}
-              width={sw - (SASH - 3) * 2}
-              height={sh - (SASH - 3) * 2}
+              x={sx + SASH - 2}
+              y={sy + SASH - 2}
+              width={sw - (SASH - 2) * 2}
+              height={sh - (SASH - 2) * 2}
               fill={edge}
-              opacity={0.55}
+              opacity={0.5}
             />
-            {/* Glass spacer bar (aluminium distancer) */}
-            <rect
-              x={gx - 1}
-              y={gy - 1}
-              width={gw + 2}
-              height={gh + 2}
-              fill="none"
-              stroke="#8a8f96"
-              strokeWidth={1.2}
-              opacity={0.7}
-            />
-            {/* Glass — sky gradient */}
+            {/* Glass */}
             <rect x={gx} y={gy} width={gw} height={gh} fill="url(#glass)" />
-            {/* Soft cloud shapes in upper half */}
-            <g opacity={0.35}>
-              <ellipse cx={gx + gw * 0.25} cy={gy + gh * 0.22} rx={gw * 0.18} ry={gh * 0.04} fill="#ffffff" />
-              <ellipse cx={gx + gw * 0.65} cy={gy + gh * 0.35} rx={gw * 0.22} ry={gh * 0.045} fill="#ffffff" />
-              <ellipse cx={gx + gw * 0.85} cy={gy + gh * 0.15} rx={gw * 0.12} ry={gh * 0.03} fill="#ffffff" />
-            </g>
-            {/* Faint horizon silhouette (distant rooftops/trees) */}
-            <path
-              d={`M ${gx} ${gy + gh * 0.62}
-                  L ${gx + gw * 0.1} ${gy + gh * 0.62}
-                  L ${gx + gw * 0.14} ${gy + gh * 0.595}
-                  L ${gx + gw * 0.22} ${gy + gh * 0.595}
-                  L ${gx + gw * 0.26} ${gy + gh * 0.615}
-                  L ${gx + gw * 0.45} ${gy + gh * 0.615}
-                  L ${gx + gw * 0.5} ${gy + gh * 0.585}
-                  L ${gx + gw * 0.58} ${gy + gh * 0.585}
-                  L ${gx + gw * 0.62} ${gy + gh * 0.61}
-                  L ${gx + gw * 0.78} ${gy + gh * 0.61}
-                  L ${gx + gw * 0.82} ${gy + gh * 0.59}
-                  L ${gx + gw * 0.92} ${gy + gh * 0.59}
-                  L ${gx + gw * 0.95} ${gy + gh * 0.615}
-                  L ${gx + gw} ${gy + gh * 0.615}
-                  L ${gx + gw} ${gy + gh * 0.62}
-                  Z`}
-              fill="#3a5566"
-              opacity={0.28}
-            />
-            {/* Water-like horizon reflection line */}
+            {/* Diagonal light streak */}
+            <rect x={gx} y={gy} width={gw} height={gh} fill="url(#glassReflect)" />
+            {/* Subtle horizon line — fake landscape reflection */}
             <line
               x1={gx}
               y1={gy + gh * 0.62}
               x2={gx + gw}
               y2={gy + gh * 0.62}
               stroke="#ffffff"
-              strokeOpacity={0.35}
+              strokeOpacity={0.18}
               strokeWidth={0.6}
             />
-            {/* Diagonal light sweeps */}
-            <rect x={gx} y={gy} width={gw} height={gh} fill="url(#glassReflect)" />
-            <rect x={gx} y={gy} width={gw} height={gh} fill="url(#glassReflect2)" />
             {/* Cavity depth shadow */}
             <rect x={gx} y={gy} width={gw} height={gh} fill="url(#glassDepth)" />
             {/* Inner glass border */}
@@ -680,7 +604,7 @@ const WindowPreview = ({
               height={gh - 1}
               fill="none"
               stroke="#000"
-              strokeOpacity={0.25}
+              strokeOpacity={0.2}
               strokeWidth={0.75}
             />
 
@@ -769,41 +693,22 @@ const Handle = ({
   side: "left" | "right";
   color: string;
 }) => {
-  const len = 26;
-  const leverX = side === "right" ? x - 4 - len : x + 4;
-  const plateX = side === "right" ? x - 5 : x - 3;
+  const len = 22;
+  const baseX = side === "right" ? x - 4 : x - 4;
+  const leverX = side === "right" ? x - 4 - len : x - 4;
   return (
     <g>
       {/* Soft shadow under handle */}
-      <ellipse
-        cx={side === "right" ? x - len / 2 - 2 : x + len / 2 + 2}
-        cy={y + 7}
-        rx={len / 1.4}
-        ry={2.5}
-        fill="#000"
-        opacity={0.22}
-      />
-      {/* Metal base plate — rounded */}
-      <rect x={plateX} y={y - 7} width={10} height={14} rx={3} fill="url(#chrome)" />
-      <rect x={plateX + 0.5} y={y - 6.5} width={9} height={13} rx={2.5} fill="none" stroke="#000" strokeOpacity={0.25} strokeWidth={0.5} />
-      {/* Lever neck */}
-      <rect x={leverX} y={y - 2.5} width={len} height={5} rx={2.5} fill="url(#chrome)" />
-      <rect x={leverX} y={y - 2.5} width={len} height={5} rx={2.5} fill="none" stroke="#000" strokeOpacity={0.3} strokeWidth={0.5} />
-      {/* Lever top highlight */}
-      <rect x={leverX + 1} y={y - 2} width={len - 2} height={1.2} rx={0.6} fill="#fff" opacity={0.6} />
-      {/* Lever tip cap */}
-      <circle
-        cx={side === "right" ? leverX : leverX + len}
-        cy={y}
-        r={3}
-        fill="url(#chrome)"
-        stroke="#000"
-        strokeOpacity={0.3}
-        strokeWidth={0.5}
-      />
+      <ellipse cx={side === "right" ? x - len / 2 : x + len / 2} cy={y + 5} rx={len / 1.6} ry={2} fill="#000" opacity={0.18} />
+      {/* Metal base plate */}
+      <rect x={baseX} y={y - 5} width={8} height={10} rx={2} fill={color} />
+      <rect x={baseX} y={y - 5} width={8} height={3} rx={1} fill="#fff" opacity={0.25} />
+      {/* Lever (chrome look) */}
+      <rect x={leverX} y={y - 2} width={len} height={4} rx={2} fill={color} />
+      <rect x={leverX} y={y - 2} width={len} height={1.4} rx={0.7} fill="#fff" opacity={0.55} />
+      <rect x={leverX} y={y + 1} width={len} height={1} rx={0.5} fill="#000" opacity={0.25} />
       {/* Pivot screw */}
-      <circle cx={x} cy={y} r={1.6} fill="#2a2d33" />
-      <circle cx={x} cy={y} r={1.6} fill="none" stroke="#fff" strokeOpacity={0.3} strokeWidth={0.4} />
+      <circle cx={x} cy={y} r={1.4} fill="#000" opacity={0.4} />
     </g>
   );
 };
