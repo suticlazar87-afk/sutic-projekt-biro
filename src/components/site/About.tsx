@@ -16,33 +16,40 @@ export const About = () => {
             <span className="text-xs uppercase tracking-[0.25em]">O nama</span>
           </div>
           <h2 className="font-display text-4xl md:text-5xl font-medium leading-[1.05] text-foreground">
-            Šutić Projekt
+            Inženjerski pristup
             <br />
-            <span className="italic text-accent">Biro.</span>
+            <span className="italic text-accent">svakom projektu.</span>
           </h2>
         </div>
 
         <div className="lg:col-span-7 space-y-6 text-lg leading-relaxed text-foreground/80">
           <p>
-            <strong className="text-foreground">ŠUTIĆ PROJEKT BIRO</strong> se bavi
-            projektovanjem, inženjeringom i izvođenjem aluminijumskih i PVC
-            konstrukcija i termotehničkih instalacija — aluminijumske i PVC
-            stolarije, staklenih fasada i alubonda, staklenih bašta, prateće
-            opreme, termotehničkih instalacija i solarnih sistema.
+            Šutić Projekt Biro se bavi projektovanjem, izradom i ugradnjom
+            aluminijumskih i PVC konstrukcija, kao i termotehničkih instalacija.
           </p>
           <p>
-            Projektni biro je proistekao iz dugogodišnjeg uspešnog rada
-            <strong className="text-foreground"> Dejana Šutića, dipl. mašinskog inženjera</strong>,
-            sada vlasnika biroa.
+            Vodi nas <strong className="text-foreground">Dejan Šutić, dipl. inženjer mašinstva</strong>.
+            Naš fokus je ušteda energije u domaćinstvima i poslovnim objektima —
+            kroz pravilno odabrane sisteme stolarije, fasada i termotehnike.
           </p>
-          <p>
-            ŠUTIĆ PROJEKT BIRO danas čini tim inženjera i projektanata koji su
-            tu da Vam ponude i predlože najbolje rešenje za Vaš dom ili poslovni
-            objekat, a u cilju uštede energije i samim tim Vašeg novca. Tu smo
-            da izlazeći u susret Vašim idejama i predlozima projektanata i
-            arhitekte udovoljimo zahtevima savremenog dizajna u skladu sa
-            kriterijumima modernog življenja i uspešnog poslovanja.
-          </p>
+          <div className="pt-6 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-border">
+            {[
+              ["01", "Projektovanje", "Tehnička dokumentacija po meri objekta."],
+              ["02", "Proizvodnja", "Kontrolisan kvalitet i provereni sistemi."],
+              ["03", "Ugradnja", "Sopstveni tim, bez podizvođača."],
+              ["04", "Servis", "Podrška i održavanje nakon isporuke."],
+            ].map(([n, t, d]) => (
+              <div key={t} className="group">
+                <div className="text-[11px] font-medium tracking-[0.25em] text-accent mb-2">
+                  — {n}
+                </div>
+                <h4 className="font-display text-xl text-foreground transition-colors group-hover:text-accent">
+                  {t}
+                </h4>
+                <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{d}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

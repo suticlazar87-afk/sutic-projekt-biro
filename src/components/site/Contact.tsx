@@ -35,10 +35,10 @@ export const Contact = () => {
             <span className="text-xs uppercase tracking-[0.25em]">Kontakt</span>
           </div>
           <h2 className="font-display text-4xl md:text-5xl font-medium leading-[1.05] text-foreground">
-            Šutić Projekt <span className="italic text-accent">Biro.</span>
+            Razgovarajmo o <span className="italic text-accent">vašem projektu.</span>
           </h2>
           <p className="mt-6 text-muted-foreground leading-relaxed">
-            Dejan Šutić, dipl. inženjer mašinstva.
+            Pošaljite nam upit putem emaila ili nas pozovite telefonom.
           </p>
 
           <dl className="mt-10 space-y-6">

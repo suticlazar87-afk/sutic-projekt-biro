@@ -20,17 +20,17 @@ export const Hero = () => {
         <div className="max-w-3xl animate-fade-up">
           <div className="mb-6 inline-flex items-center gap-3 text-primary-foreground/80">
             <span className="h-px w-10 bg-accent" />
-            <span className="text-xs uppercase tracking-[0.25em]">Šutić Projekt Biro</span>
+            <span className="text-xs uppercase tracking-[0.25em]">Projektovanje · Inženjering · Izvođenje</span>
           </div>
           <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-medium leading-[1.02] text-primary-foreground">
-            Aluminijumske i PVC
+            Prozori
             <br />
-            <span className="italic text-accent">konstrukcije.</span>
+            <span className="italic text-accent">i vrata.</span>
           </h1>
           <p className="mt-8 max-w-xl text-lg text-primary-foreground/85 leading-relaxed">
-            Projektovanje, inženjering i izvođenje aluminijumskih i PVC
-            konstrukcija i termotehničkih instalacija — u cilju uštede energije
-            u domaćinstvima i poslovnim objektima.
+            Aluminijumske i PVC konstrukcije i termotehničke instalacije —
+            projektovanje, inženjering i izvođenje za stambene i poslovne
+            objekte u Beogradu.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <Link
@@ -52,7 +52,7 @@ export const Hero = () => {
               href="#usluge"
               className="inline-flex items-center gap-2 px-7 py-4 text-sm font-medium text-primary-foreground border border-primary-foreground/30 hover:bg-primary-foreground/10 hover:border-primary-foreground/60 transition-all duration-300"
             >
-              Delatnost
+              Pogledajte usluge
             </a>
           </div>
         </div>
