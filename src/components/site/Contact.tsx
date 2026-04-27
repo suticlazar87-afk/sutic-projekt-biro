@@ -17,11 +17,10 @@ export const Contact = () => {
     const body = encodeURIComponent(
       `Ime: ${name}\nEmail: ${email}\nTelefon: ${phone}\n\nPoruka:\n${message}`
     );
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=dejan@sutic.net&su=${subject}&body=${body}`;
-    window.open(gmailUrl, "_blank", "noopener,noreferrer");
+    window.location.href = `mailto:dejan@sutic.net?subject=${subject}&body=${body}`;
     setTimeout(() => {
-      toast.success("Otvaramo Gmail…", {
-        description: "Ukoliko se prozor ne otvori, pišite direktno na dejan@sutic.net",
+      toast.success("Otvaramo vaš email klijent…", {
+        description: "Ukoliko se ne otvori, pišite direktno na dejan@sutic.net",
       });
       setSending(false);
     }, 300);
@@ -44,7 +43,7 @@ export const Contact = () => {
 
           <dl className="mt-10 space-y-6">
             {[
-              ["Email", "dejan@sutic.net", "https://mail.google.com/mail/?view=cm&fs=1&to=dejan@sutic.net"],
+              ["Email", "dejan@sutic.net", "mailto:dejan@sutic.net"],
               ["Telefon", "+381 11 24 05 640", "tel:+381112405640"],
               ["Mobilni", "+381 64 11 85 967", "tel:+381641185967"],
               ["Adresa", "Radoja Domanovića 11, 11 120 Beograd", null],
@@ -55,12 +54,7 @@ export const Contact = () => {
                 </dt>
                 <dd className="mt-2 font-display text-xl text-foreground">
                   {href ? (
-                    <a
-                      href={href as string}
-                      target={(href as string).startsWith("http") ? "_blank" : undefined}
-                      rel={(href as string).startsWith("http") ? "noopener noreferrer" : undefined}
-                      className="hover:text-accent transition-colors"
-                    >
+                    <a href={href as string} className="hover:text-accent transition-colors">
                       {v}
                     </a>
                   ) : (

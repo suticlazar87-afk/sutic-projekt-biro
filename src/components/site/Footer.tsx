@@ -11,12 +11,7 @@ export const Footer = () => (
       <div className="text-sm text-primary-foreground/80 space-y-1">
         <div>Radoja Domanovića 11</div>
         <div>11 120 Beograd, Srbija</div>
-        <a
-          href="https://mail.google.com/mail/?view=cm&fs=1&to=dejan@sutic.net"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block text-accent hover:underline mt-2"
-        >
+        <a href="mailto:dejan@sutic.net" className="block text-accent hover:underline mt-2">
           dejan@sutic.net
         </a>
       </div>
