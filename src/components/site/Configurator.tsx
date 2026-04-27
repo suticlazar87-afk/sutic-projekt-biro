@@ -608,12 +608,22 @@ const WindowPreview = ({
               strokeWidth={0.75}
             />
 
-            {/* Opening indicator: dashed lines forming triangle */}
-            {/* Šarke su na suprotnoj strani od ručice → apex trougla pokazuje ka šarkama */}
-            {type.id !== "fixed" && <OpeningIndicator x={sx} y={sy} w={sw} h={sh} tilt={tilt} isDoor={isDoor} side={i === 0 ? "right" : i === sashCount - 1 ? "left" : "right"} />}
+            {/* Trokrilni: srednje krilo je fiksno (bez šarki, bez ručice).
+                Krajnja krila se otvaraju — šarke na spoljašnjoj strani, ručica ka sredini. */}
+            {type.id !== "fixed" && !(sashCount === 3 && i === 1) && (
+              <OpeningIndicator
+                x={sx}
+                y={sy}
+                w={sw}
+                h={sh}
+                tilt={tilt}
+                isDoor={isDoor}
+                side={i === 0 ? "right" : "left"}
+              />
+            )}
 
             {/* Handle */}
-            {type.id !== "fixed" && (
+            {type.id !== "fixed" && !(sashCount === 3 && i === 1) && (
               <Handle
                 x={i === 0 ? sx + sw - SASH - 4 : sx + SASH + 4}
                 y={isDoor ? sy + sh * 0.55 : sy + sh * 0.5}
