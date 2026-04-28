@@ -1,6 +1,20 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
+// Darken/lighten a hex color by amount in [-1, 1]
+function shade(hex: string, amount: number): string {
+  const h = hex.replace("#", "");
+  const full = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+  const num = parseInt(full, 16);
+  let r = (num >> 16) & 0xff;
+  let g = (num >> 8) & 0xff;
+  let b = num & 0xff;
+  const adj = (c: number) =>
+    Math.max(0, Math.min(255, Math.round(c + (amount < 0 ? c * amount : (255 - c) * amount))));
+  r = adj(r); g = adj(g); b = adj(b);
+  return "#" + [r, g, b].map((c) => c.toString(16).padStart(2, "0")).join("");
+}
+
 type WindowType =
   | "single"
   | "double"
@@ -9,7 +23,7 @@ type WindowType =
   | "fixed"
   | "tilt";
 
-type Material = "pvc-white" | "pvc-anthracite" | "pvc-oak" | "al-anthracite" | "al-black" | "al-bronze";
+type MaterialKind = "alu-wood" | "pvc" | "alu" | "steel";
 type GlassType = "double" | "triple" | "triple-low-e";
 
 const TYPES: { id: WindowType; label: string; desc: string; sashes: number; hasTilt: boolean; isDoor: boolean }[] = [
@@ -21,13 +35,33 @@ const TYPES: { id: WindowType; label: string; desc: string; sashes: number; hasT
   { id: "balcony", label: "Balkonska vrata", desc: "Prozor + vrata za izlaz", sashes: 2, hasTilt: true, isDoor: true },
 ];
 
-const MATERIALS: { id: Material; label: string; frame: string; edge: string; group: "PVC" | "ALU" }[] = [
-  { id: "pvc-white", label: "PVC Belo", frame: "#f4f5f7", edge: "#cfd2d8", group: "PVC" },
-  { id: "pvc-anthracite", label: "PVC Antracit", frame: "#3a3f45", edge: "#1f2226", group: "PVC" },
-  { id: "pvc-oak", label: "PVC Zlatni hrast", frame: "#9a6b36", edge: "#5e3f1e", group: "PVC" },
-  { id: "al-anthracite", label: "AL Antracit", frame: "#2c3033", edge: "#15181a", group: "ALU" },
-  { id: "al-black", label: "AL Crni mat", frame: "#1a1b1d", edge: "#0a0b0c", group: "ALU" },
-  { id: "al-bronze", label: "AL Bronza", frame: "#6b523a", edge: "#3b2c1e", group: "ALU" },
+const MATERIAL_KINDS: { id: MaterialKind; label: string; desc: string; priceM2: number }[] = [
+  { id: "alu-wood", label: "Aluminijum-drvo", desc: "Spolja aluminijum, iznutra drvo (bajc)", priceM2: 420 },
+  { id: "pvc", label: "PVC", desc: "Pet- ili šestokomorni profil", priceM2: 160 },
+  { id: "alu", label: "Aluminijum", desc: "Sa termo prekidom, plastificiran", priceM2: 320 },
+  { id: "steel", label: "Čelik", desc: "Profil sa termo prekidom", priceM2: 380 },
+];
+
+// Color presets for paintable materials (PVC / Aluminijum / Čelik)
+const PAINT_COLORS: { id: string; label: string; frame: string; edge: string }[] = [
+  { id: "white",      label: "Bela",            frame: "#f4f5f7", edge: "#cfd2d8" },
+  { id: "cream",      label: "Krem",            frame: "#ece4d2", edge: "#bdb39a" },
+  { id: "grey",       label: "Svetlo siva",     frame: "#b6b9bd", edge: "#7f8186" },
+  { id: "anthracite", label: "Antracit",        frame: "#3a3f45", edge: "#1f2226" },
+  { id: "black",      label: "Crna mat",        frame: "#1a1b1d", edge: "#0a0b0c" },
+  { id: "bronze",     label: "Bronza",          frame: "#6b523a", edge: "#3b2c1e" },
+  { id: "green",      label: "Tamno zelena",    frame: "#2f4a3a", edge: "#172a1f" },
+  { id: "red",        label: "Vinsko crvena",   frame: "#6e1f24", edge: "#3b0f12" },
+  { id: "blue",       label: "Plavi čelik",     frame: "#2b3a55", edge: "#15203a" },
+];
+
+// Bajc (stain) options for the wood interior of alu-wood
+const WOOD_STAINS: { id: string; label: string; frame: string; edge: string }[] = [
+  { id: "natural", label: "Prirodni",       frame: "#d6b07d", edge: "#8a6638" },
+  { id: "oak",     label: "Zlatni hrast",   frame: "#9a6b36", edge: "#5e3f1e" },
+  { id: "walnut",  label: "Orah",           frame: "#6b4226", edge: "#3a2414" },
+  { id: "mahogany",label: "Mahagoni",       frame: "#5a2a20", edge: "#2c130d" },
+  { id: "wenge",   label: "Wenge",          frame: "#2e221a", edge: "#16100b" },
 ];
 
 const GLASS: { id: GlassType; label: string; u: string; factor: number }[] = [
@@ -36,30 +70,46 @@ const GLASS: { id: GlassType; label: string; u: string; factor: number }[] = [
   { id: "triple-low-e", label: "Troslojno Low-E + Argon", u: "U = 0.5 W/m²K", factor: 1.55 },
 ];
 
-// Base price per m² by material + glass
-const BASE_PRICE: Record<Material, number> = {
-  "pvc-white": 140,
-  "pvc-anthracite": 175,
-  "pvc-oak": 185,
-  "al-anthracite": 320,
-  "al-black": 340,
-  "al-bronze": 340,
-};
-
 export const Configurator = () => {
   const [type, setType] = useState<WindowType>("double");
   const [width, setWidth] = useState(1400); // mm
   const [height, setHeight] = useState(1400);
-  const [material, setMaterial] = useState<Material>("pvc-white");
+  const [materialKind, setMaterialKind] = useState<MaterialKind>("pvc");
+  const [colorId, setColorId] = useState<string>("white");
+  const [customColor, setCustomColor] = useState<string>("#f4f5f7");
+  const [useCustomColor, setUseCustomColor] = useState<boolean>(false);
+  const [stainId, setStainId] = useState<string>("oak");
   const [glass, setGlass] = useState<GlassType>("triple");
   const [tilt, setTilt] = useState(true);
 
   const typeCfg = TYPES.find((t) => t.id === type)!;
-  const mat = MATERIALS.find((m) => m.id === material)!;
+  const matKind = MATERIAL_KINDS.find((m) => m.id === materialKind)!;
   const glassCfg = GLASS.find((g) => g.id === glass)!;
 
+  const isWoodInside = materialKind === "alu-wood";
+  const stain = WOOD_STAINS.find((s) => s.id === stainId) ?? WOOD_STAINS[1];
+  const paint = PAINT_COLORS.find((c) => c.id === colorId) ?? PAINT_COLORS[0];
+
+  // Effective frame/edge for SVG preview
+  let frameColor: string;
+  let edgeColor: string;
+  let colorLabel: string;
+  if (isWoodInside) {
+    frameColor = stain.frame;
+    edgeColor = stain.edge;
+    colorLabel = `Drvo iznutra: ${stain.label} (bajc)`;
+  } else if (useCustomColor) {
+    frameColor = customColor;
+    edgeColor = shade(customColor, -0.35);
+    colorLabel = `Po izboru: ${customColor.toUpperCase()}`;
+  } else {
+    frameColor = paint.frame;
+    edgeColor = paint.edge;
+    colorLabel = paint.label;
+  }
+
   const area = (width * height) / 1_000_000;
-  const price = Math.round(area * BASE_PRICE[material] * glassCfg.factor);
+  const price = Math.round(area * matKind.priceM2 * glassCfg.factor);
 
   // Track stage size so SVG always fits the viewport
   const [stageW, setStageW] = useState(560);
@@ -159,7 +209,8 @@ export const Configurator = () => {
       "",
       `• Tip: ${typeCfg.label}`,
       `• Dimenzije: ${width} × ${height} mm (${area.toFixed(2)} m²)`,
-      `• Materijal / boja: ${mat.label}`,
+      `• Materijal: ${matKind.label}`,
+      `• Boja / završna obrada: ${colorLabel}`,
       `• Staklo: ${glassCfg.label} (${glassCfg.u})`,
       typeCfg.hasTilt ? `• Otklop (kip): ${tilt ? "da" : "ne"}` : "",
       "",
@@ -170,7 +221,7 @@ export const Configurator = () => {
       "Hvala,",
     ].filter(Boolean);
     return encodeURIComponent(lines.join("\n"));
-  }, [typeCfg, width, height, area, mat, glassCfg, tilt, price]);
+  }, [typeCfg, width, height, area, matKind, colorLabel, glassCfg, tilt, price]);
 
   const mailto = `mailto:dejan@sutic.net?subject=${encodeURIComponent(
     "Upit iz konfiguratora — " + typeCfg.label,
@@ -217,8 +268,8 @@ export const Configurator = () => {
                   type={typeCfg}
                   width={svgW}
                   height={svgH}
-                  frame={mat.frame}
-                  edge={mat.edge}
+                  frame={frameColor}
+                  edge={edgeColor}
                   tilt={tilt && typeCfg.hasTilt}
                 />
               </div>
@@ -308,33 +359,108 @@ export const Configurator = () => {
               />
             </div>
 
-            {/* Material */}
+            {/* Material kind */}
             <div>
-              <Label>Materijal i boja</Label>
-              <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-2">
-                {MATERIALS.map((m) => (
+              <Label>Materijal</Label>
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                {MATERIAL_KINDS.map((m) => (
                   <button
                     key={m.id}
-                    onClick={() => setMaterial(m.id)}
+                    onClick={() => setMaterialKind(m.id)}
                     className={cn(
-                      "group border p-3 text-left transition-all duration-200",
-                      material === m.id
-                        ? "border-accent shadow-card"
-                        : "border-border hover:border-foreground/40",
+                      "text-left border p-3 transition-all duration-200",
+                      materialKind === m.id
+                        ? "border-accent bg-accent/5 shadow-card"
+                        : "border-border hover:border-foreground/40 bg-background",
                     )}
                   >
-                    <span
-                      className="block h-8 w-full mb-2 border border-border/60"
-                      style={{ background: m.frame }}
-                    />
-                    <div className="text-[11px] uppercase tracking-wider text-muted-foreground">
-                      {m.group}
-                    </div>
-                    <div className="text-xs text-foreground">{m.label.replace(/^(PVC|AL)\s/, "")}</div>
+                    <div className="font-display text-base text-foreground">{m.label}</div>
+                    <div className="text-[11px] text-muted-foreground mt-0.5">{m.desc}</div>
                   </button>
                 ))}
               </div>
             </div>
+
+            {/* Color / finish */}
+            {isWoodInside ? (
+              <div>
+                <Label>Bajc (završna obrada drveta)</Label>
+                <div className="mt-3 grid grid-cols-3 sm:grid-cols-5 gap-2">
+                  {WOOD_STAINS.map((s) => (
+                    <button
+                      key={s.id}
+                      onClick={() => setStainId(s.id)}
+                      className={cn(
+                        "border p-2 text-left transition-all duration-200",
+                        stainId === s.id
+                          ? "border-accent shadow-card"
+                          : "border-border hover:border-foreground/40",
+                      )}
+                    >
+                      <span
+                        className="block h-8 w-full mb-2 border border-border/60"
+                        style={{ background: s.frame }}
+                      />
+                      <div className="text-[11px] text-foreground leading-tight">{s.label}</div>
+                    </button>
+                  ))}
+                </div>
+                <p className="mt-3 text-[11px] text-muted-foreground">
+                  Drvo se ne boji — samo se bajcuje. Spoljna aluminijumska strana se može plastificirati u bilo kojoj RAL boji na zahtev.
+                </p>
+              </div>
+            ) : (
+              <div>
+                <Label>Boja okvira</Label>
+                <div className="mt-3 grid grid-cols-3 sm:grid-cols-5 gap-2">
+                  {PAINT_COLORS.map((c) => (
+                    <button
+                      key={c.id}
+                      onClick={() => {
+                        setColorId(c.id);
+                        setUseCustomColor(false);
+                      }}
+                      className={cn(
+                        "border p-2 text-left transition-all duration-200",
+                        !useCustomColor && colorId === c.id
+                          ? "border-accent shadow-card"
+                          : "border-border hover:border-foreground/40",
+                      )}
+                    >
+                      <span
+                        className="block h-8 w-full mb-2 border border-border/60"
+                        style={{ background: c.frame }}
+                      />
+                      <div className="text-[11px] text-foreground leading-tight">{c.label}</div>
+                    </button>
+                  ))}
+                </div>
+                <div className="mt-4 flex items-center gap-3">
+                  <label className="flex items-center gap-2 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={useCustomColor}
+                      onChange={(e) => setUseCustomColor(e.target.checked)}
+                      className="h-4 w-4 accent-[hsl(var(--accent))]"
+                    />
+                    <span className="text-xs text-foreground">Boja po izboru</span>
+                  </label>
+                  <input
+                    type="color"
+                    value={customColor}
+                    onChange={(e) => {
+                      setCustomColor(e.target.value);
+                      setUseCustomColor(true);
+                    }}
+                    className="h-8 w-12 cursor-pointer border border-border bg-background"
+                    aria-label="Izaberi boju"
+                  />
+                  <span className="text-[11px] text-muted-foreground uppercase tracking-wider">
+                    {useCustomColor ? customColor.toUpperCase() : "RAL po dogovoru"}
+                  </span>
+                </div>
+              </div>
+            )}
 
             {/* Glass */}
             <div>
