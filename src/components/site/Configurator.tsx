@@ -79,6 +79,10 @@ export const Configurator = () => {
   const [customColor, setCustomColor] = useState<string>("#f4f5f7");
   const [useCustomColor, setUseCustomColor] = useState<boolean>(false);
   const [stainId, setStainId] = useState<string>("oak");
+  // Alu-wood: spoljna aluminijumska boja
+  const [aluColorId, setAluColorId] = useState<string>("anthracite");
+  const [aluCustomColor, setAluCustomColor] = useState<string>("#3a3f45");
+  const [useAluCustomColor, setUseAluCustomColor] = useState<boolean>(false);
   const [glass, setGlass] = useState<GlassType>("triple");
   const [tilt, setTilt] = useState(true);
 
@@ -89,6 +93,10 @@ export const Configurator = () => {
   const isWoodInside = materialKind === "alu-wood";
   const stain = WOOD_STAINS.find((s) => s.id === stainId) ?? WOOD_STAINS[1];
   const paint = PAINT_COLORS.find((c) => c.id === colorId) ?? PAINT_COLORS[0];
+  const aluPaint = PAINT_COLORS.find((c) => c.id === aluColorId) ?? PAINT_COLORS[3];
+  const aluLabel = useAluCustomColor
+    ? `po izboru ${aluCustomColor.toUpperCase()}`
+    : aluPaint.label;
 
   // Effective frame/edge for SVG preview
   let frameColor: string;
@@ -97,7 +105,7 @@ export const Configurator = () => {
   if (isWoodInside) {
     frameColor = stain.frame;
     edgeColor = stain.edge;
-    colorLabel = `Drvo iznutra: ${stain.label} (bajc)`;
+    colorLabel = `Drvo iznutra: ${stain.label} (bajc) · Aluminijum spolja: ${aluLabel}`;
   } else if (useCustomColor) {
     frameColor = customColor;
     edgeColor = shade(customColor, -0.35);
