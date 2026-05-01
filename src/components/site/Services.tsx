@@ -1,14 +1,14 @@
-import pvcImg from "@/assets/staklene-baste.jpg"; // actually white PVC window
+import stolarijaImg from "@/assets/al-pvc-stolarija.jpg";
 import alImg from "@/assets/al-stolarija.jpg";
 import fasadeImg from "@/assets/alubond-fasade.jpg";
-import basteImg from "@/assets/pvc-stolarija.jpg"; // actually conservatory-like glass
+import basteImg from "@/assets/staklene-baste.jpg";
 
 const services = [
   {
     nr: "01",
     title: "Al i PVC stolarija",
     desc: "Aluminijumska i PVC stolarija.",
-    img: pvcImg,
+    img: stolarijaImg,
   },
   {
     nr: "02",
@@ -20,13 +20,13 @@ const services = [
     nr: "03",
     title: "Staklene bašte",
     desc: "Staklene bašte.",
-    img: alImg,
+    img: basteImg,
   },
   {
     nr: "04",
     title: "Prateća oprema",
     desc: "Prateća oprema.",
-    img: basteImg,
+    img: alImg,
   },
 ];
 
