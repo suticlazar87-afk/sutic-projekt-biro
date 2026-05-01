@@ -391,31 +391,84 @@ export const Configurator = () => {
 
             {/* Color / finish */}
             {isWoodInside ? (
-              <div>
-                <Label>Bajc (završna obrada drveta)</Label>
-                <div className="mt-3 grid grid-cols-3 sm:grid-cols-5 gap-2">
-                  {WOOD_STAINS.map((s) => (
-                    <button
-                      key={s.id}
-                      onClick={() => setStainId(s.id)}
-                      className={cn(
-                        "border p-2 text-left transition-all duration-200",
-                        stainId === s.id
-                          ? "border-accent shadow-card"
-                          : "border-border hover:border-foreground/40",
-                      )}
-                    >
-                      <span
-                        className="block h-8 w-full mb-2 border border-border/60"
-                        style={{ background: s.frame }}
-                      />
-                      <div className="text-[11px] text-foreground leading-tight">{s.label}</div>
-                    </button>
-                  ))}
+              <div className="space-y-6">
+                <div>
+                  <Label>Bajc drveta (unutrašnja strana)</Label>
+                  <div className="mt-3 grid grid-cols-3 sm:grid-cols-5 gap-2">
+                    {WOOD_STAINS.map((s) => (
+                      <button
+                        key={s.id}
+                        onClick={() => setStainId(s.id)}
+                        className={cn(
+                          "border p-2 text-left transition-all duration-200",
+                          stainId === s.id
+                            ? "border-accent shadow-card"
+                            : "border-border hover:border-foreground/40",
+                        )}
+                      >
+                        <span
+                          className="block h-8 w-full mb-2 border border-border/60"
+                          style={{ background: s.frame }}
+                        />
+                        <div className="text-[11px] text-foreground leading-tight">{s.label}</div>
+                      </button>
+                    ))}
+                  </div>
+                  <p className="mt-3 text-[11px] text-muted-foreground">
+                    Drvo se ne boji — samo se bajcuje.
+                  </p>
                 </div>
-                <p className="mt-3 text-[11px] text-muted-foreground">
-                  Drvo se ne boji — samo se bajcuje. Spoljna aluminijumska strana se može plastificirati u bilo kojoj RAL boji na zahtev.
-                </p>
+
+                <div>
+                  <Label>Boja aluminijuma (spoljna strana)</Label>
+                  <div className="mt-3 grid grid-cols-3 sm:grid-cols-5 gap-2">
+                    {PAINT_COLORS.map((c) => (
+                      <button
+                        key={c.id}
+                        onClick={() => {
+                          setAluColorId(c.id);
+                          setUseAluCustomColor(false);
+                        }}
+                        className={cn(
+                          "border p-2 text-left transition-all duration-200",
+                          !useAluCustomColor && aluColorId === c.id
+                            ? "border-accent shadow-card"
+                            : "border-border hover:border-foreground/40",
+                        )}
+                      >
+                        <span
+                          className="block h-8 w-full mb-2 border border-border/60"
+                          style={{ background: c.frame }}
+                        />
+                        <div className="text-[11px] text-foreground leading-tight">{c.label}</div>
+                      </button>
+                    ))}
+                  </div>
+                  <div className="mt-4 flex items-center gap-3">
+                    <label className="flex items-center gap-2 cursor-pointer select-none">
+                      <input
+                        type="checkbox"
+                        checked={useAluCustomColor}
+                        onChange={(e) => setUseAluCustomColor(e.target.checked)}
+                        className="h-4 w-4 accent-[hsl(var(--accent))]"
+                      />
+                      <span className="text-xs text-foreground">Boja po izboru</span>
+                    </label>
+                    <input
+                      type="color"
+                      value={aluCustomColor}
+                      onChange={(e) => {
+                        setAluCustomColor(e.target.value);
+                        setUseAluCustomColor(true);
+                      }}
+                      className="h-8 w-12 cursor-pointer border border-border bg-background"
+                      aria-label="Izaberi boju aluminijuma"
+                    />
+                    <span className="text-[11px] text-muted-foreground uppercase tracking-wider">
+                      {useAluCustomColor ? aluCustomColor.toUpperCase() : "RAL po dogovoru"}
+                    </span>
+                  </div>
+                </div>
               </div>
             ) : (
               <div>
