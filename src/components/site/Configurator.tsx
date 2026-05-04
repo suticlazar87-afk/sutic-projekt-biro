@@ -828,6 +828,7 @@ const WindowPreview = ({
                 y={isDoor ? sy + sh * 0.55 : sy + sh * 0.5}
                 side={i === 0 ? "right" : "left"}
                 color={edge}
+                scale={scale}
               />
             )}
           </g>
@@ -890,28 +891,35 @@ const Handle = ({
   y,
   side,
   color,
+  scale,
 }: {
   x: number;
   y: number;
   side: "left" | "right";
   color: string;
+  scale: number;
 }) => {
-  const len = 22;
-  const baseX = side === "right" ? x - 4 : x - 4;
-  const leverX = side === "right" ? x - 4 - len : x - 4;
+  // Real-world handle dimensions (mm) → svg units
+  const len = 140 * scale;
+  const baseW = 50 * scale;
+  const baseH = 60 * scale;
+  const leverH = 24 * scale;
+  const offset = 24 * scale;
+  const baseX = side === "right" ? x - offset : x - offset;
+  const leverX = side === "right" ? x - offset - len : x - offset;
   return (
     <g>
       {/* Soft shadow under handle */}
-      <ellipse cx={side === "right" ? x - len / 2 : x + len / 2} cy={y + 5} rx={len / 1.6} ry={2} fill="#000" opacity={0.18} />
+      <ellipse cx={side === "right" ? x - len / 2 : x + len / 2} cy={y + leverH * 1.4} rx={len / 1.6} ry={leverH * 0.5} fill="#000" opacity={0.18} />
       {/* Metal base plate */}
-      <rect x={baseX} y={y - 5} width={8} height={10} rx={2} fill={color} />
-      <rect x={baseX} y={y - 5} width={8} height={3} rx={1} fill="#fff" opacity={0.25} />
+      <rect x={baseX} y={y - baseH / 2} width={baseW} height={baseH} rx={baseW * 0.25} fill={color} />
+      <rect x={baseX} y={y - baseH / 2} width={baseW} height={baseH * 0.3} rx={baseW * 0.2} fill="#fff" opacity={0.25} />
       {/* Lever (chrome look) */}
-      <rect x={leverX} y={y - 2} width={len} height={4} rx={2} fill={color} />
-      <rect x={leverX} y={y - 2} width={len} height={1.4} rx={0.7} fill="#fff" opacity={0.55} />
-      <rect x={leverX} y={y + 1} width={len} height={1} rx={0.5} fill="#000" opacity={0.25} />
+      <rect x={leverX} y={y - leverH / 2} width={len} height={leverH} rx={leverH / 2} fill={color} />
+      <rect x={leverX} y={y - leverH / 2} width={len} height={leverH * 0.35} rx={leverH / 2} fill="#fff" opacity={0.55} />
+      <rect x={leverX} y={y + leverH * 0.25} width={len} height={leverH * 0.25} rx={leverH / 2} fill="#000" opacity={0.25} />
       {/* Pivot screw */}
-      <circle cx={x} cy={y} r={1.4} fill="#000" opacity={0.4} />
+      <circle cx={x} cy={y} r={baseW * 0.12} fill="#000" opacity={0.4} />
     </g>
   );
 };
