@@ -1,7 +1,7 @@
 import stolarijaImg from "@/assets/al-pvc-stolarija.jpg";
-import alImg from "@/assets/al-stolarija.jpg";
 import fasadeImg from "@/assets/alubond-fasade.jpg";
 import basteImg from "@/assets/staklene-baste.jpg";
+import opremaImg from "@/assets/prateca-oprema.jpg";
 
 const services = [
   {
@@ -26,7 +26,7 @@ const services = [
     nr: "04",
     title: "Prateća oprema",
     desc: "U ponudi je i prateća oprema: roletne, komarnici, okapnice, motori, senzori i dodatni elementi za unapređenje funkcionalnosti i komfora. Sve komponente su kompatibilne sa našim sistemima i proverene u praksi.",
-    img: alImg,
+    img: opremaImg,
   },
 ];
 

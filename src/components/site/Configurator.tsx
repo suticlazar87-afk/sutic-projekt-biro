@@ -276,6 +276,8 @@ export const Configurator = () => {
                   type={typeCfg}
                   width={svgW}
                   height={svgH}
+                  realWidth={width}
+                  realHeight={height}
                   frame={frameColor}
                   edge={edgeColor}
                   tilt={tilt && typeCfg.hasTilt}
@@ -643,6 +645,8 @@ const WindowPreview = ({
   type,
   width,
   height,
+  realWidth,
+  realHeight,
   frame,
   edge,
   tilt,
@@ -650,13 +654,21 @@ const WindowPreview = ({
   type: TypeCfg;
   width: number;
   height: number;
+  realWidth: number;
+  realHeight: number;
   frame: string;
   edge: string;
   tilt: boolean;
 }) => {
-  const FRAME = 14; // outer frame thickness
-  const SASH = 10; // sash thickness
-  const GAP = 2;
+  // Real-world frame thickness in mm — converted to SVG units so it stays
+  // visually proportional regardless of window size.
+  const FRAME_MM = 70;
+  const SASH_MM = 55;
+  const GAP_MM = 12;
+  const scale = width / realWidth; // svg units per mm
+  const FRAME = FRAME_MM * scale;
+  const SASH = SASH_MM * scale;
+  const GAP = GAP_MM * scale;
 
   const innerX = FRAME;
   const innerY = FRAME;
