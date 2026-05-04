@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Menu, X, ArrowLeft } from "lucide-react";
 import Configurator from "@/components/site/Configurator";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logo.png";
 
 const navLinks = [
   { to: "/", label: "Početna" },
@@ -28,10 +29,8 @@ const Konfigurator = () => {
       <header className="fixed top-0 inset-x-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
         <div className="container flex h-16 items-center justify-between">
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="relative h-9 w-9 overflow-hidden rounded-sm bg-primary">
-              <span className="absolute inset-0 grid place-items-center font-display text-base font-semibold text-primary-foreground">
-                Š
-              </span>
+            <div className="relative h-9 w-9 overflow-hidden rounded-sm bg-background">
+              <img src={logo} alt="Šutić Projekt Biro logo" className="h-full w-full object-contain" />
             </div>
             <div className="leading-tight">
               <div className="font-display text-sm font-medium text-foreground">
