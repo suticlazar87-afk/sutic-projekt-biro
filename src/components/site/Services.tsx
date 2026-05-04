@@ -7,25 +7,25 @@ const services = [
   {
     nr: "01",
     title: "Al i PVC stolarija",
-    desc: "Aluminijumska i PVC stolarija.",
+    desc: "Aluminijumska i PVC stolarija po meri, prilagođena stambenim i poslovnim objektima. Naša rešenja obezbeđuju dobru termo i zvučnu izolaciju, dug vek trajanja i jednostavno održavanje.",
     img: stolarijaImg,
   },
   {
     nr: "02",
     title: "Al fasade i alubond",
-    desc: "Aluminijumske fasade i alubond.",
+    desc: "Aluminijumski fasadni sistemi i alubond obloge objektima daju moderan izgled i dodatnu zaštitu. Sistemi su otporni na spoljne uticaje i omogućavaju efikasnu energetsku optimizaciju objekta.",
     img: fasadeImg,
   },
   {
     nr: "03",
     title: "Staklene bašte",
-    desc: "Staklene bašte.",
+    desc: "Staklene bašte proširuju životni ili poslovni prostor i omogućavaju maksimalno korišćenje prirodne svetlosti. Konstrukcije su stabilne, funkcionalne i prilagođene konkretnim uslovima i potrebama korisnika.",
     img: basteImg,
   },
   {
     nr: "04",
     title: "Prateća oprema",
-    desc: "Prateća oprema.",
+    desc: "U ponudi je i prateća oprema: roletne, komarnici, okapnice, motori, senzori i dodatni elementi za unapređenje funkcionalnosti i komfora. Sve komponente su kompatibilne sa našim sistemima i proverene u praksi.",
     img: alImg,
   },
 ];
