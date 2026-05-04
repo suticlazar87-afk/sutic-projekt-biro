@@ -814,6 +814,7 @@ const WindowPreview = ({
                 y={sy}
                 w={sw}
                 h={sh}
+                inset={SASH + 4}
                 tilt={tilt}
                 isDoor={isDoor}
                 side={i === 0 ? "right" : "left"}
@@ -841,6 +842,7 @@ const OpeningIndicator = ({
   y,
   w,
   h,
+  inset,
   tilt,
   isDoor,
   side,
@@ -849,11 +851,13 @@ const OpeningIndicator = ({
   y: number;
   w: number;
   h: number;
+  inset: number;
   tilt: boolean;
   isDoor: boolean;
   side: "left" | "right";
 }) => {
-  const pad = 12;
+  // Keep the opening indicator strictly inside the glass area
+  const pad = inset;
   const x1 = x + pad;
   const y1 = y + pad;
   const x2 = x + w - pad;
