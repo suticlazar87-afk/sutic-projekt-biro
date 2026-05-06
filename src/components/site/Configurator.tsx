@@ -32,7 +32,8 @@ const TYPES: { id: WindowType; label: string; desc: string; sashes: number; hasT
   { id: "triple", label: "Trokrilni", desc: "Tri krila — panoramski pogled", sashes: 3, hasTilt: true, isDoor: false },
   { id: "fixed", label: "Fiksni", desc: "Bez otvaranja — maksimum svetla", sashes: 1, hasTilt: false, isDoor: false },
   { id: "tilt", label: "Samo kip", desc: "Otklopni prozor — ventilacija", sashes: 1, hasTilt: true, isDoor: false },
-  { id: "balcony", label: "Balkonska vrata", desc: "Prozor + vrata za izlaz", sashes: 2, hasTilt: true, isDoor: true },
+  { id: "balcony-single", label: "Balkonska vrata — jednokrilna", desc: "Jedno krilo, izlaz na terasu", sashes: 1, hasTilt: true, isDoor: true },
+  { id: "balcony", label: "Balkonska vrata — dvokrilna", desc: "Prozor + vrata za izlaz", sashes: 2, hasTilt: true, isDoor: true },
 ];
 
 const MATERIAL_KINDS: { id: MaterialKind; label: string; desc: string; priceM2: number }[] = [
