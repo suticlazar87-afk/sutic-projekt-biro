@@ -685,7 +685,6 @@ const WindowPreview = ({
       width={width}
       height={height}
       viewBox={`0 0 ${width} ${height}`}
-      className="drop-shadow-[0_30px_40px_rgba(15,30,55,0.25)]"
     >
       <defs>
         {/* Realistic sky reflection in glass */}
@@ -712,30 +711,11 @@ const WindowPreview = ({
           <stop offset="0%" stopColor="#ffffff" stopOpacity="0.45" />
           <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
         </linearGradient>
-        {/* Frame right shadow */}
-        <linearGradient id="frameRight" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#000000" stopOpacity="0" />
-          <stop offset="100%" stopColor="#000000" stopOpacity="0.32" />
-        </linearGradient>
-        {/* Frame bottom shadow */}
-        <linearGradient id="frameBot" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#000000" stopOpacity="0" />
-          <stop offset="100%" stopColor="#000000" stopOpacity="0.35" />
-        </linearGradient>
         {/* Inner profile step (glazing bead) */}
         <linearGradient id="beadHi" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#ffffff" stopOpacity="0.5" />
           <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
         </linearGradient>
-        <linearGradient id="beadLo" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#000000" stopOpacity="0" />
-          <stop offset="100%" stopColor="#000000" stopOpacity="0.4" />
-        </linearGradient>
-        {/* Soft shadow inside glass cavity */}
-        <radialGradient id="glassDepth" cx="0.5" cy="0.5" r="0.7">
-          <stop offset="60%" stopColor="#000000" stopOpacity="0" />
-          <stop offset="100%" stopColor="#000000" stopOpacity="0.18" />
-        </radialGradient>
       </defs>
 
       {/* ===== Outer frame — multi-step profile (chamfer + bead) ===== */}
