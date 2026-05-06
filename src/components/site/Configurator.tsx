@@ -20,6 +20,7 @@ type WindowType =
   | "double"
   | "triple"
   | "balcony"
+  | "balcony-single"
   | "fixed"
   | "tilt";
 
