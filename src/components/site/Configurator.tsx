@@ -738,18 +738,16 @@ const WindowPreview = ({
             {/* outer chamfer — right */}
             <polygon
               points={`${width},0 ${width},${height} ${width - ch},${height - ch} ${width - ch},${ch}`}
-              fill={shade(frame, -0.25)}
+              fill={shade(frame, 0.1)}
             />
             {/* outer chamfer — bottom */}
             <polygon
               points={`0,${height} ${ch},${height - ch} ${width - ch},${height - ch} ${width},${height}`}
-              fill={shade(frame, -0.32)}
+              fill={shade(frame, 0.08)}
             />
             {/* directional light wash */}
             <rect x={0} y={0} width={width} height={height} fill="url(#frameTop)" />
             <rect x={0} y={0} width={width} height={height} fill="url(#frameLeft)" />
-            <rect x={0} y={0} width={width} height={height} fill="url(#frameRight)" />
-            <rect x={0} y={0} width={width} height={height} fill="url(#frameBot)" />
             {/* outer crisp edge */}
             <rect
               x={0.5}
@@ -757,47 +755,12 @@ const WindowPreview = ({
               width={width - 1}
               height={height - 1}
               fill="none"
-              stroke={shade(edge, -0.2)}
+              stroke={edge}
               strokeWidth={1}
             />
 
             {/* ===== Inner step (glazing rebate) ===== */}
-            {/* recessed dark cavity */}
-            <rect x={innerX} y={innerY} width={innerW} height={innerH} fill={shade(edge, -0.4)} />
-            {/* inner bead highlight (top edge of recess) */}
-            <rect
-              x={innerX}
-              y={innerY}
-              width={innerW}
-              height={Math.max(1, ch * 0.6)}
-              fill="#000"
-              opacity={0.45}
-            />
-            <rect
-              x={innerX}
-              y={innerY}
-              width={Math.max(1, ch * 0.5)}
-              height={innerH}
-              fill="#000"
-              opacity={0.35}
-            />
-            {/* inner bead light leak (bottom/right) */}
-            <rect
-              x={innerX}
-              y={innerY + innerH - Math.max(1, ch * 0.5)}
-              width={innerW}
-              height={Math.max(1, ch * 0.5)}
-              fill="#fff"
-              opacity={0.18}
-            />
-            <rect
-              x={innerX + innerW - Math.max(1, ch * 0.4)}
-              y={innerY}
-              width={Math.max(1, ch * 0.4)}
-              height={innerH}
-              fill="#fff"
-              opacity={0.14}
-            />
+            <rect x={innerX} y={innerY} width={innerW} height={innerH} fill={edge} />
           </g>
         );
       })()}
@@ -835,18 +798,16 @@ const WindowPreview = ({
             {/* sash chamfer right */}
             <polygon
               points={`${sx + sw},${sy} ${sx + sw},${sy + sh} ${sx + sw - sCh},${sy + sh - sCh} ${sx + sw - sCh},${sy + sCh}`}
-              fill={shade(frame, -0.22)}
+              fill={shade(frame, 0.08)}
             />
             {/* sash chamfer bottom */}
             <polygon
               points={`${sx},${sy + sh} ${sx + sCh},${sy + sh - sCh} ${sx + sw - sCh},${sy + sh - sCh} ${sx + sw},${sy + sh}`}
-              fill={shade(frame, -0.3)}
+              fill={shade(frame, 0.06)}
             />
             {/* directional light on sash */}
             <rect x={sx} y={sy} width={sw} height={sh} fill="url(#frameTop)" />
             <rect x={sx} y={sy} width={sw} height={sh} fill="url(#frameLeft)" />
-            <rect x={sx} y={sy} width={sw} height={sh} fill="url(#frameRight)" />
-            <rect x={sx} y={sy} width={sw} height={sh} fill="url(#frameBot)" />
             {/* sash edge */}
             <rect
               x={sx + 0.5}
@@ -854,7 +815,7 @@ const WindowPreview = ({
               width={sw - 1}
               height={sh - 1}
               fill="none"
-              stroke={shade(edge, -0.15)}
+              stroke={edge}
               strokeWidth={1}
             />
             {/* Glazing bead step (inner ridge around glass) */}
@@ -873,13 +834,13 @@ const WindowPreview = ({
               fill="url(#beadHi)"
               opacity={0.6}
             />
-            {/* Glazing rebate (dark gasket where glass sits) */}
+            {/* Glazing rebate (gasket where glass sits) */}
             <rect
               x={sx + SASH - sCh * 0.5}
               y={sy + SASH - sCh * 0.5}
               width={sw - (SASH - sCh * 0.5) * 2}
               height={sh - (SASH - sCh * 0.5) * 2}
-              fill={shade(edge, -0.5)}
+              fill={edge}
             />
             {/* Glass */}
             <rect x={gx} y={gy} width={gw} height={gh} fill="url(#glass)" />
@@ -895,8 +856,6 @@ const WindowPreview = ({
               strokeOpacity={0.18}
               strokeWidth={0.6}
             />
-            {/* Cavity depth shadow */}
-            <rect x={gx} y={gy} width={gw} height={gh} fill="url(#glassDepth)" />
             {/* Glass spacer bar (warm-edge, around inner perimeter) */}
             <rect
               x={gx + sCh * 0.4}
@@ -916,7 +875,7 @@ const WindowPreview = ({
               height={gh - 1}
               fill="none"
               stroke="#000"
-              strokeOpacity={0.35}
+              strokeOpacity={0.25}
               strokeWidth={1}
             />
 
