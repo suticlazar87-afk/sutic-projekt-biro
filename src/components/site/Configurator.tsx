@@ -716,6 +716,23 @@ const WindowPreview = ({
           <stop offset="0%" stopColor="#ffffff" stopOpacity="0.5" />
           <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
         </linearGradient>
+        {/* Soft rounded bevel toward glass — light → dark gradients */}
+        <linearGradient id="bevelTop" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.18" />
+          <stop offset="100%" stopColor="#000000" stopOpacity="0.18" />
+        </linearGradient>
+        <linearGradient id="bevelBot" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#000000" stopOpacity="0.18" />
+          <stop offset="100%" stopColor="#ffffff" stopOpacity="0.22" />
+        </linearGradient>
+        <linearGradient id="bevelLeft" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.18" />
+          <stop offset="100%" stopColor="#000000" stopOpacity="0.16" />
+        </linearGradient>
+        <linearGradient id="bevelRight" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#000000" stopOpacity="0.16" />
+          <stop offset="100%" stopColor="#ffffff" stopOpacity="0.20" />
+        </linearGradient>
       </defs>
 
       {/* ===== Outer frame — multi-step profile (chamfer + bead) ===== */}
@@ -761,6 +778,18 @@ const WindowPreview = ({
 
             {/* ===== Inner step (glazing rebate) ===== */}
             <rect x={innerX} y={innerY} width={innerW} height={innerH} fill={edge} />
+            {/* Soft rounded bevel sloping inward toward the glass */}
+            {(() => {
+              const b = Math.max(2, FRAME * 0.35);
+              return (
+                <g>
+                  <rect x={innerX} y={innerY - b} width={innerW} height={b} fill="url(#bevelTop)" />
+                  <rect x={innerX} y={innerY + innerH} width={innerW} height={b} fill="url(#bevelBot)" />
+                  <rect x={innerX - b} y={innerY} width={b} height={innerH} fill="url(#bevelLeft)" />
+                  <rect x={innerX + innerW} y={innerY} width={b} height={innerH} fill="url(#bevelRight)" />
+                </g>
+              );
+            })()}
           </g>
         );
       })()}
@@ -842,6 +871,18 @@ const WindowPreview = ({
               height={sh - (SASH - sCh * 0.5) * 2}
               fill={edge}
             />
+            {/* Soft rounded bevel on sash sloping toward the glass */}
+            {(() => {
+              const b = Math.max(1.5, SASH * 0.5);
+              return (
+                <g>
+                  <rect x={gx} y={gy - b} width={gw} height={b} fill="url(#bevelTop)" />
+                  <rect x={gx} y={gy + gh} width={gw} height={b} fill="url(#bevelBot)" />
+                  <rect x={gx - b} y={gy} width={b} height={gh} fill="url(#bevelLeft)" />
+                  <rect x={gx + gw} y={gy} width={b} height={gh} fill="url(#bevelRight)" />
+                </g>
+              );
+            })()}
             {/* Glass */}
             <rect x={gx} y={gy} width={gw} height={gh} fill="url(#glass)" />
             {/* Diagonal light streak */}
