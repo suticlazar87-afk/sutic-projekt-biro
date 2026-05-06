@@ -702,15 +702,34 @@ const WindowPreview = ({
           <stop offset="55%" stopColor="#ffffff" stopOpacity="0.15" />
           <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
         </linearGradient>
-        {/* Frame highlight (top/left bevel) */}
-        <linearGradient id="frameHi" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.35" />
+        {/* Frame top highlight (sun from above-left) */}
+        <linearGradient id="frameTop" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.55" />
           <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
         </linearGradient>
-        {/* Frame shadow (bottom/right bevel) */}
-        <linearGradient id="frameLo" x1="0" y1="0" x2="0" y2="1">
+        {/* Frame left highlight */}
+        <linearGradient id="frameLeft" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.45" />
+          <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+        </linearGradient>
+        {/* Frame right shadow */}
+        <linearGradient id="frameRight" x1="0" y1="0" x2="1" y2="0">
           <stop offset="0%" stopColor="#000000" stopOpacity="0" />
-          <stop offset="100%" stopColor="#000000" stopOpacity="0.25" />
+          <stop offset="100%" stopColor="#000000" stopOpacity="0.32" />
+        </linearGradient>
+        {/* Frame bottom shadow */}
+        <linearGradient id="frameBot" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#000000" stopOpacity="0" />
+          <stop offset="100%" stopColor="#000000" stopOpacity="0.35" />
+        </linearGradient>
+        {/* Inner profile step (glazing bead) */}
+        <linearGradient id="beadHi" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+        </linearGradient>
+        <linearGradient id="beadLo" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#000000" stopOpacity="0" />
+          <stop offset="100%" stopColor="#000000" stopOpacity="0.4" />
         </linearGradient>
         {/* Soft shadow inside glass cavity */}
         <radialGradient id="glassDepth" cx="0.5" cy="0.5" r="0.7">
@@ -719,29 +738,89 @@ const WindowPreview = ({
         </radialGradient>
       </defs>
 
-      {/* Outer frame with bevel */}
-      <rect x={0} y={0} width={width} height={height} fill={frame} />
-      <rect x={0} y={0} width={width} height={height} fill="url(#frameHi)" />
-      <rect x={0} y={0} width={width} height={height} fill="url(#frameLo)" />
-      <rect
-        x={0.5}
-        y={0.5}
-        width={width - 1}
-        height={height - 1}
-        fill="none"
-        stroke={edge}
-        strokeWidth={1}
-      />
-      {/* Inner cutout — recessed look */}
-      <rect x={innerX} y={innerY} width={innerW} height={innerH} fill={edge} opacity={0.35} />
-      <rect
-        x={innerX}
-        y={innerY}
-        width={innerW}
-        height={2}
-        fill="#000"
-        opacity={0.25}
-      />
+      {/* ===== Outer frame — multi-step profile (chamfer + bead) ===== */}
+      {(() => {
+        const ch = Math.max(2, FRAME * 0.12); // chamfer
+        return (
+          <g>
+            {/* base color */}
+            <rect x={0} y={0} width={width} height={height} fill={frame} />
+            {/* outer chamfer — top */}
+            <polygon
+              points={`0,0 ${width},0 ${width - ch},${ch} ${ch},${ch}`}
+              fill={shade(frame, 0.25)}
+            />
+            {/* outer chamfer — left */}
+            <polygon
+              points={`0,0 ${ch},${ch} ${ch},${height - ch} 0,${height}`}
+              fill={shade(frame, 0.15)}
+            />
+            {/* outer chamfer — right */}
+            <polygon
+              points={`${width},0 ${width},${height} ${width - ch},${height - ch} ${width - ch},${ch}`}
+              fill={shade(frame, -0.25)}
+            />
+            {/* outer chamfer — bottom */}
+            <polygon
+              points={`0,${height} ${ch},${height - ch} ${width - ch},${height - ch} ${width},${height}`}
+              fill={shade(frame, -0.32)}
+            />
+            {/* directional light wash */}
+            <rect x={0} y={0} width={width} height={height} fill="url(#frameTop)" />
+            <rect x={0} y={0} width={width} height={height} fill="url(#frameLeft)" />
+            <rect x={0} y={0} width={width} height={height} fill="url(#frameRight)" />
+            <rect x={0} y={0} width={width} height={height} fill="url(#frameBot)" />
+            {/* outer crisp edge */}
+            <rect
+              x={0.5}
+              y={0.5}
+              width={width - 1}
+              height={height - 1}
+              fill="none"
+              stroke={shade(edge, -0.2)}
+              strokeWidth={1}
+            />
+
+            {/* ===== Inner step (glazing rebate) ===== */}
+            {/* recessed dark cavity */}
+            <rect x={innerX} y={innerY} width={innerW} height={innerH} fill={shade(edge, -0.4)} />
+            {/* inner bead highlight (top edge of recess) */}
+            <rect
+              x={innerX}
+              y={innerY}
+              width={innerW}
+              height={Math.max(1, ch * 0.6)}
+              fill="#000"
+              opacity={0.45}
+            />
+            <rect
+              x={innerX}
+              y={innerY}
+              width={Math.max(1, ch * 0.5)}
+              height={innerH}
+              fill="#000"
+              opacity={0.35}
+            />
+            {/* inner bead light leak (bottom/right) */}
+            <rect
+              x={innerX}
+              y={innerY + innerH - Math.max(1, ch * 0.5)}
+              width={innerW}
+              height={Math.max(1, ch * 0.5)}
+              fill="#fff"
+              opacity={0.18}
+            />
+            <rect
+              x={innerX + innerW - Math.max(1, ch * 0.4)}
+              y={innerY}
+              width={Math.max(1, ch * 0.4)}
+              height={innerH}
+              fill="#fff"
+              opacity={0.14}
+            />
+          </g>
+        );
+      })()}
 
       {Array.from({ length: sashCount }).map((_, i) => {
         const sx = innerX + i * (sashW + GAP);
@@ -757,29 +836,70 @@ const WindowPreview = ({
         const gw = sw - SASH * 2;
         const gh = sh - SASH * 2;
 
+        const sCh = Math.max(1.5, SASH * 0.14);
+
         return (
           <g key={i}>
-            {/* Sash frame with bevel */}
+            {/* ===== Sash — multi-step profile ===== */}
             <rect x={sx} y={sy} width={sw} height={sh} fill={frame} />
-            <rect x={sx} y={sy} width={sw} height={sh} fill="url(#frameHi)" />
-            <rect x={sx} y={sy} width={sw} height={sh} fill="url(#frameLo)" />
+            {/* sash chamfer top */}
+            <polygon
+              points={`${sx},${sy} ${sx + sw},${sy} ${sx + sw - sCh},${sy + sCh} ${sx + sCh},${sy + sCh}`}
+              fill={shade(frame, 0.22)}
+            />
+            {/* sash chamfer left */}
+            <polygon
+              points={`${sx},${sy} ${sx + sCh},${sy + sCh} ${sx + sCh},${sy + sh - sCh} ${sx},${sy + sh}`}
+              fill={shade(frame, 0.12)}
+            />
+            {/* sash chamfer right */}
+            <polygon
+              points={`${sx + sw},${sy} ${sx + sw},${sy + sh} ${sx + sw - sCh},${sy + sh - sCh} ${sx + sw - sCh},${sy + sCh}`}
+              fill={shade(frame, -0.22)}
+            />
+            {/* sash chamfer bottom */}
+            <polygon
+              points={`${sx},${sy + sh} ${sx + sCh},${sy + sh - sCh} ${sx + sw - sCh},${sy + sh - sCh} ${sx + sw},${sy + sh}`}
+              fill={shade(frame, -0.3)}
+            />
+            {/* directional light on sash */}
+            <rect x={sx} y={sy} width={sw} height={sh} fill="url(#frameTop)" />
+            <rect x={sx} y={sy} width={sw} height={sh} fill="url(#frameLeft)" />
+            <rect x={sx} y={sy} width={sw} height={sh} fill="url(#frameRight)" />
+            <rect x={sx} y={sy} width={sw} height={sh} fill="url(#frameBot)" />
+            {/* sash edge */}
             <rect
               x={sx + 0.5}
               y={sy + 0.5}
               width={sw - 1}
               height={sh - 1}
               fill="none"
-              stroke={edge}
+              stroke={shade(edge, -0.15)}
               strokeWidth={1}
             />
-            {/* Inner sash rebate (where glass sits) */}
+            {/* Glazing bead step (inner ridge around glass) */}
             <rect
-              x={sx + SASH - 2}
-              y={sy + SASH - 2}
-              width={sw - (SASH - 2) * 2}
-              height={sh - (SASH - 2) * 2}
-              fill={edge}
-              opacity={0.5}
+              x={sx + SASH - sCh * 1.5}
+              y={sy + SASH - sCh * 1.5}
+              width={sw - (SASH - sCh * 1.5) * 2}
+              height={sh - (SASH - sCh * 1.5) * 2}
+              fill={shade(frame, 0.05)}
+            />
+            <rect
+              x={sx + SASH - sCh * 1.5}
+              y={sy + SASH - sCh * 1.5}
+              width={sw - (SASH - sCh * 1.5) * 2}
+              height={sh - (SASH - sCh * 1.5) * 2}
+              fill="url(#beadHi)"
+              opacity={0.6}
+            />
+            {/* Glazing rebate (dark gasket where glass sits) */}
+            <rect
+              x={sx + SASH - sCh * 0.5}
+              y={sy + SASH - sCh * 0.5}
+              width={sw - (SASH - sCh * 0.5) * 2}
+              height={sh - (SASH - sCh * 0.5) * 2}
+              fill={shade(edge, -0.5)}
             />
             {/* Glass */}
             <rect x={gx} y={gy} width={gw} height={gh} fill="url(#glass)" />
@@ -797,6 +917,17 @@ const WindowPreview = ({
             />
             {/* Cavity depth shadow */}
             <rect x={gx} y={gy} width={gw} height={gh} fill="url(#glassDepth)" />
+            {/* Glass spacer bar (warm-edge, around inner perimeter) */}
+            <rect
+              x={gx + sCh * 0.4}
+              y={gy + sCh * 0.4}
+              width={gw - sCh * 0.8}
+              height={gh - sCh * 0.8}
+              fill="none"
+              stroke="#9aa3ad"
+              strokeOpacity={0.55}
+              strokeWidth={Math.max(0.6, sCh * 0.35)}
+            />
             {/* Inner glass border */}
             <rect
               x={gx + 0.5}
@@ -805,8 +936,8 @@ const WindowPreview = ({
               height={gh - 1}
               fill="none"
               stroke="#000"
-              strokeOpacity={0.2}
-              strokeWidth={0.75}
+              strokeOpacity={0.35}
+              strokeWidth={1}
             />
 
             {/* Opening indicator */}
@@ -819,7 +950,7 @@ const WindowPreview = ({
                 inset={SASH + 4}
                 tilt={tilt}
                 isDoor={isDoor}
-                side={i === 0 ? "right" : "left"}
+                side={sashCount === 1 ? "right" : i === 0 ? "right" : "left"}
               />
             )}
 
