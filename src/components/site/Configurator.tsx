@@ -981,8 +981,6 @@ const Handle = ({
   const leverX = side === "right" ? x - offset - len : x - offset;
   return (
     <g>
-      {/* Soft shadow under handle */}
-      <ellipse cx={side === "right" ? x - len / 2 : x + len / 2} cy={y + leverH * 1.4} rx={len / 1.6} ry={leverH * 0.5} fill="#000" opacity={0.18} />
       {/* Metal base plate */}
       <rect x={baseX} y={y - baseH / 2} width={baseW} height={baseH} rx={baseW * 0.25} fill={color} />
       <rect x={baseX} y={y - baseH / 2} width={baseW} height={baseH * 0.3} rx={baseW * 0.2} fill="#fff" opacity={0.25} />
