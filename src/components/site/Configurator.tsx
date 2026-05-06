@@ -716,6 +716,23 @@ const WindowPreview = ({
           <stop offset="0%" stopColor="#ffffff" stopOpacity="0.5" />
           <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
         </linearGradient>
+        {/* Soft rounded bevel toward glass — light → dark gradients */}
+        <linearGradient id="bevelTop" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.18" />
+          <stop offset="100%" stopColor="#000000" stopOpacity="0.18" />
+        </linearGradient>
+        <linearGradient id="bevelBot" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#000000" stopOpacity="0.18" />
+          <stop offset="100%" stopColor="#ffffff" stopOpacity="0.22" />
+        </linearGradient>
+        <linearGradient id="bevelLeft" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.18" />
+          <stop offset="100%" stopColor="#000000" stopOpacity="0.16" />
+        </linearGradient>
+        <linearGradient id="bevelRight" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#000000" stopOpacity="0.16" />
+          <stop offset="100%" stopColor="#ffffff" stopOpacity="0.20" />
+        </linearGradient>
       </defs>
 
       {/* ===== Outer frame — multi-step profile (chamfer + bead) ===== */}
